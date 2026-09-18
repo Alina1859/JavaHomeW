@@ -2,10 +2,7 @@ package tests;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.codeborne.selenide.WebElementCondition;
 import org.junit.jupiter.api.Test;
 
 public class PracticeFormNegativeTests extends TestBase {
