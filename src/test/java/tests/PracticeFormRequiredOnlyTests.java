@@ -1,6 +1,7 @@
 package tests;
 
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,7 @@ public class PracticeFormRequiredOnlyTests extends TestBase {
 
         $("#firstName").val("Don");
         $("#lastName").val("Simon");
-        $("#gender-radio-1").setSelected(true);
+        $("#genterWrapper").$(byText("Male")).click();
         $("#userNumber").val("89996666666");
 
         executeJavaScript("document.getElementById('submit').click();");

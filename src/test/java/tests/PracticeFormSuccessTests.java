@@ -1,6 +1,7 @@
 package tests;
 
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,8 @@ public class PracticeFormSuccessTests extends TestBase {
         $("#firstName").val("Don");
         $("#lastName").val("Simon");
         $("#userEmail").val("dobroipozitiv@gmail.com");
-        $("#gender-radio-1").setSelected(true);
+        $("#genterWrapper").$(byText("Male"))
+                .click();
         $("#userNumber").val("89996666666");
 
         $("#dateOfBirthInput").click();
@@ -24,7 +26,8 @@ public class PracticeFormSuccessTests extends TestBase {
 
         $("#subjectsInput").val("Maths")
                 .pressEnter();
-        $("#hobbies-checkbox-2").setSelected(true);
+        $("#hobbiesWrapper").$(byText("Reading"))
+                .click();
         $("#uploadPicture").uploadFromClasspath("dog.jpg");
         $("#currentAddress").val("Улица Пушкина, дом Колотушкина, 7");
         $("#react-select-3-input").val("NCR")
