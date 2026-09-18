@@ -1,6 +1,7 @@
 package tests;
 
 import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ public class PracticeFormNegativeTests extends TestBase {
         $("#userNumber").shouldHave(cssValue("border-color",
                 "rgb(220, 53, 69)"));
 
-        $("label[for='gender-radio-1']").shouldHave(cssValue("color",
+        $("#genterWrapper").$(byText("Male")).shouldHave(cssValue("color",
                 "rgba(220, 53, 69, 1)"));
     }
 
@@ -30,7 +31,7 @@ public class PracticeFormNegativeTests extends TestBase {
 
         $("#firstName").val("Don");
         $("#lastName").val("Simon");
-        $("#gender-radio-1").setSelected(true);
+        $("#genterWrapper").$(byText("Male")).click();
         $("#userNumber").val("1");
 
         executeJavaScript("document.getElementById('submit').click();");
@@ -45,7 +46,7 @@ public class PracticeFormNegativeTests extends TestBase {
 
         $("#firstName").val("Абоба");
         $("#lastName").val("Абобович");
-        $("#gender-radio-1").setSelected(true);
+        $("#genterWrapper").$(byText("Male")).click();
         $("#userNumber").val("8999666666");
 
         $("#userEmail").val("notanemail");
@@ -62,7 +63,7 @@ public class PracticeFormNegativeTests extends TestBase {
 
         $("#firstName").val("Артемий");
         $("#lastName").val("Бурах");
-        $("#gender-radio-1").setSelected(true);
+        $("#genterWrapper").$(byText("Male")).click();
         $("#userNumber").val("8999666666");
 
         $("#subjectsInput").val("КвантоваяФизика");
