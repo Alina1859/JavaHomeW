@@ -12,17 +12,17 @@ public class PracticeFormRequiredOnlyTests extends TestBase {
     void practiceFormRequiredOnlyTest() {
         open("/automation-practice-form");
 
-        $("#firstName").val("Don");
-        $("#lastName").val("Simon");
+        $("#firstName").setValue("Don");
+        $("#lastName").setValue("Simon");
         $("#genterWrapper").$(byText("Male")).click();
-        $("#userNumber").val("89996666666");
+        $("#userNumber").setValue("8999666666");
 
-        executeJavaScript("document.getElementById('submit').click();");
+        $("#submit").scrollTo().click();
 
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
 
-        $(".table-responsive").shouldHave(text("Don Simon"),
-                text("Male"),
-                text("8999666666"));
+        $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text("Don Simon"));
+        $(".table-responsive").$(byText("Gender")).parent().shouldHave(text("Male"));
+        $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text("8999666666"));
     }
 }

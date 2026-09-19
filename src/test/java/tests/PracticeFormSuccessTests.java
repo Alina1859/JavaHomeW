@@ -12,44 +12,37 @@ public class PracticeFormSuccessTests extends TestBase {
     void practiceFormSuccessTest() {
         open("/automation-practice-form");
 
-        $("#firstName").val("Don");
-        $("#lastName").val("Simon");
-        $("#userEmail").val("dobroipozitiv@gmail.com");
-        $("#genterWrapper").$(byText("Male"))
-                .click();
-        $("#userNumber").val("89996666666");
+        $("#firstName").setValue("Don");
+        $("#lastName").setValue("Simon");
+        $("#userEmail").setValue("dobroipozitiv@gmail.com");
+        $("#genterWrapper").$(byText("Male")).click();
+        $("#userNumber").setValue("89996666666");
 
         $("#dateOfBirthInput").click();
         $(".react-datepicker__month-select").selectOption("July");
         $(".react-datepicker__year-select").selectOption("1996");
         $(".react-datepicker__day--018").click();
 
-        $("#subjectsInput").val("Maths")
-                .pressEnter();
-        $("#hobbiesWrapper").$(byText("Reading"))
-                .click();
+        $("#subjectsInput").setValue("Maths").pressEnter();
+        $("#hobbiesWrapper").$(byText("Reading")).click();
         $("#uploadPicture").uploadFromClasspath("dog.jpg");
-        $("#currentAddress").val("Улица Пушкина, дом Колотушкина, 7");
-        $("#react-select-3-input").val("NCR")
-                .pressEnter();
-        $("#react-select-4-input").val("Delhi")
-                .pressEnter();
+        $("#currentAddress").setValue("Улица Пушкина, дом Колотушкина, 7");
+        $("#react-select-3-input").setValue("NCR").pressEnter();
+        $("#react-select-4-input").setValue("Delhi").pressEnter();
 
-        executeJavaScript("document.getElementById('submit').click();");
+        $("#submit").scrollTo().click();
 
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
 
-        $(".table-responsive")
-                .shouldHave(
-                        text("Don Simon"),
-                        text("dobroipozitiv@gmail.com"),
-                        text("Male"),
-                        text("8999666666"),
-                        text("18 July,1996"),
-                        text("Maths"),
-                        text("Reading"),
-                        text("dog.jpg"),
-                        text("Улица Пушкина, дом Колотушкина, 7"),
-                        text("NCR Delhi"));
+        $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text("Don Simon"));
+        $(".table-responsive").$(byText("Student Email")).parent().shouldHave(text("dobroipozitiv@gmail.com"));
+        $(".table-responsive").$(byText("Gender")).parent().shouldHave(text("Male"));
+        $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text("8999666666"));
+        $(".table-responsive").$(byText("Date of Birth")).parent().shouldHave(text("18 July,1996"));
+        $(".table-responsive").$(byText("Subjects")).parent().shouldHave(text("Maths"));
+        $(".table-responsive").$(byText("Hobbies")).parent().shouldHave(text("Reading"));
+        $(".table-responsive").$(byText("Picture")).parent().shouldHave(text("dog.jpg"));
+        $(".table-responsive").$(byText("Address")).parent().shouldHave(text("Улица Пушкина, дом Колотушкина, 7"));
+        $(".table-responsive").$(byText("State and City")).parent().shouldHave(text("NCR Delhi"));
     }
 }
