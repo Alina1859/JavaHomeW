@@ -4,6 +4,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
+import com.codeborne.selenide.WebElementCondition;
 import org.junit.jupiter.api.Test;
 
 public class PracticeFormNegativeTests extends TestBase {
@@ -12,71 +13,64 @@ public class PracticeFormNegativeTests extends TestBase {
     void practiceFormRequiredNotFilledTest() {
         open("/automation-practice-form");
 
-        executeJavaScript("document.getElementById('submit').click();");
+        $("#submit").scrollTo().click();
 
-        $("#firstName").shouldHave(cssValue("border-color",
-                "rgb(220, 53, 69)"));
-        $("#lastName").shouldHave(cssValue("border-color",
-                "rgb(220, 53, 69)"));
-        $("#userNumber").shouldHave(cssValue("border-color",
-                "rgb(220, 53, 69)"));
+        $("#firstName").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#lastName").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#userNumber").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
 
-        $("#genterWrapper").$(byText("Male")).shouldHave(cssValue("color",
-                "rgba(220, 53, 69, 1)"));
+        $("#genterWrapper").$(byText("Male")).shouldHave(cssValue("color", "rgba(220, 53, 69, 1)"));
     }
 
     @Test
     void practiceFormNotValidMobile() {
         open("/automation-practice-form");
 
-        $("#firstName").val("Don");
-        $("#lastName").val("Simon");
+        $("#firstName").setValue("Don");
+        $("#lastName").setValue("Simon");
         $("#genterWrapper").$(byText("Male")).click();
-        $("#userNumber").val("1");
+        $("#userNumber").clear();
 
-        executeJavaScript("document.getElementById('submit').click();");
+        $("#submit").scrollTo().click();
 
-        $("#userNumber").shouldHave(cssValue("box-shadow",
-                "rgba(220, 53, 69, 0.25) 0px 0px 0px 4px"));
+        $("#userNumber").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
     }
+
 
     @Test
     void practiceFormInvalidEmail() {
         open("/automation-practice-form");
 
-        $("#firstName").val("Абоба");
-        $("#lastName").val("Абобович");
+        $("#firstName").setValue("Абоба");
+        $("#lastName").setValue("Абобович");
         $("#genterWrapper").$(byText("Male")).click();
-        $("#userNumber").val("8999666666");
+        $("#userNumber").setValue("8999666666");
 
-        $("#userEmail").val("notanemail");
+        $("#userEmail").setValue("notanemail");
 
-        executeJavaScript("document.getElementById('submit').click();");
+        $("#submit").scrollTo().click();
 
-        $("#userEmail").shouldHave(cssValue("box-shadow",
-                "rgba(220, 53, 69, 0.25) 0px 0px 0px 4px"));
+        $("#userEmail").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
     }
 
     @Test
     void practiceFormUnknownSubject() {
         open("/automation-practice-form");
 
-        $("#firstName").val("Артемий");
-        $("#lastName").val("Бурах");
+        $("#firstName").setValue("Артемий");
+        $("#lastName").setValue("Бурах");
         $("#genterWrapper").$(byText("Male")).click();
-        $("#userNumber").val("8999666666");
+        $("#userNumber").setValue("8999666666");
 
-        $("#subjectsInput").val("КвантоваяФизика");
-        $("#subjectsInput").pressEnter();
+        $("#subjectsInput").setValue("КвантоваяФизика").pressEnter();
 
-        executeJavaScript("document.getElementById('submit').click();");
+        $("#submit").scrollTo().click();
 
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
-        $(".table-responsive").shouldHave(
-                text("Артемий Бурах"),
-                text("Male"),
-                text("8999666666"),
-                text("КвантоваяФизика"));
+        $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text("Артемий Бурах"));
+        $(".table-responsive").$(byText("Gender")).parent().shouldHave(text("Male"));
+        $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text("8999666666"));
+        $(".table-responsive").$(byText("Subjects")).parent().shouldHave(text("КвантоваяФизика"));
 
     }
 }

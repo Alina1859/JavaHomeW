@@ -11,30 +11,29 @@ public class PracticeTextBoxTests extends TestBase {
     void textBoxMinimalFill() {
         open("/text-box");
 
-        $("#userName").val("Don Simon");
-        $("#userEmail").val("dobroipozitiv@gmail.com");
-        $("#currentAddress").val("Улица Пушкина");
-        $("#permanentAddress").val("Улица Колотушкина");
+        $("#userName").setValue("Don Simon");
+        $("#userEmail").setValue("dobroipozitiv@gmail.com");
+        $("#currentAddress").setValue("Улица Пушкина");
+        $("#permanentAddress").setValue("Улица Колотушкина");
 
-        executeJavaScript("document.getElementById('submit').click();");
+        $("#submit").scrollTo().click();
 
-        $("#output").shouldHave(
-                text("Don Simon"),
-                text("dobroipozitiv@gmail.com"),
-                text("Улица Пушкина"),
-                text("Улица Колотушкина"));
+        $("#output #name").shouldHave(text("Don Simon"));
+        $("#output #email").shouldHave(text("dobroipozitiv@gmail.com"));
+        $("#output #currentAddress").shouldHave(text("Улица Пушкина"));
+        $("#output #permanentAddress").shouldHave(text("Улица Колотушкина"));
     }
 
     @Test
     void textBoxInvalidEmailIsRejected() {
         open("/text-box");
 
-        $("#userName").val("Don Simon");
-        $("#userEmail").val("notanemail");
-        $("#currentAddress").val("Улица Пушкина");
-        $("#permanentAddress").val("Улица Колотушкина");
+        $("#userName").setValue("Don Simon");
+        $("#userEmail").setValue("notanemail");
+        $("#currentAddress").setValue("Улица Пушкина");
+        $("#permanentAddress").setValue("Улица Колотушкина");
 
-        executeJavaScript("document.getElementById('submit').click();");
+        $("#submit").scrollTo().click();
 
         $("#userEmail").shouldHave(cssClass("field-error"));
     }
