@@ -1,40 +1,41 @@
 package tests;
 
+import helpers.TestBase;
 import org.junit.jupiter.api.Test;
+import pages.TextBoxPage;
 
-import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.*;
+import static helpers.TestData.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PracticeTextBoxTests extends TestBase {
 
+    TextBoxPage textBoxPage = new TextBoxPage();
+
     @Test
-    void textBoxMinimalFill() {
-        open("/text-box");
+    void textBoxAllFieldsTest() {
+        textBoxPage.open()
+                .setUserName(USER_NAME)
+                .setUserEmail(USER_EMAIL)
+                .setCurrentAddress(CURRENT_ADDRESS)
+                .setPermanentAddress(PERMANENT_ADDRESS)
+                .submit();
 
-        $("#userName").setValue("Don Simon");
-        $("#userEmail").setValue("dobroipozitiv@gmail.com");
-        $("#currentAddress").setValue("Улица Пушкина");
-        $("#permanentAddress").setValue("Улица Колотушкина");
-
-        $("#submit").scrollTo().click();
-
-        $("#output #name").shouldHave(text("Don Simon"));
-        $("#output #email").shouldHave(text("dobroipozitiv@gmail.com"));
-        $("#output #currentAddress").shouldHave(text("Улица Пушкина"));
-        $("#output #permanentAddress").shouldHave(text("Улица Колотушкина"));
+        assertEquals("Name:" + USER_NAME, textBoxPage.getOutputName());
+        assertEquals("Email:" + USER_EMAIL, textBoxPage.getOutputEmail());
+        assertEquals("Current Address :" + CURRENT_ADDRESS, textBoxPage.getOutputCurrentAddress());
+        assertEquals("Permananet Address :" + PERMANENT_ADDRESS, textBoxPage.getOutputPermanentAddress());
     }
 
     @Test
     void textBoxInvalidEmailIsRejected() {
-        open("/text-box");
+        textBoxPage.open()
+                .setUserName(USER_NAME)
+                .setUserEmail(INVALID_EMAIL)
+                .setCurrentAddress(CURRENT_ADDRESS)
+                .setPermanentAddress(PERMANENT_ADDRESS)
+                .submit();
 
-        $("#userName").setValue("Don Simon");
-        $("#userEmail").setValue("notanemail");
-        $("#currentAddress").setValue("Улица Пушкина");
-        $("#permanentAddress").setValue("Улица Колотушкина");
-
-        $("#submit").scrollTo().click();
-
-        $("#userEmail").shouldHave(cssClass("field-error"));
+        assertTrue(textBoxPage.getUserEmailClass().contains("field-error"));
     }
 }

@@ -1,76 +1,65 @@
 package tests;
 
-import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.*;
+import static helpers.TestData.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.codeborne.selenide.WebElementCondition;
+import helpers.TestBase;
 import org.junit.jupiter.api.Test;
+import pages.PracticeFormPage;
 
 public class PracticeFormNegativeTests extends TestBase {
 
+    PracticeFormPage practiceFormPage = new PracticeFormPage();
+
     @Test
     void practiceFormRequiredNotFilledTest() {
-        open("/automation-practice-form");
+        practiceFormPage.open().submit();
 
-        $("#submit").scrollTo().click();
-
-        $("#firstName").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
-        $("#lastName").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
-        $("#userNumber").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
-
-        $("#genterWrapper").$(byText("Male")).shouldHave(cssValue("color", "rgba(220, 53, 69, 1)"));
+        practiceFormPage.checkFirstNameBorderColor("rgb(220, 53, 69)");
+        practiceFormPage.checkLastNameBorderColor("rgb(220, 53, 69)");
+        practiceFormPage.checkUserNumberBorderColor("rgb(220, 53, 69)");
+        practiceFormPage.checkGenderColor(GENDER, "rgba(220, 53, 69, 1)");
     }
 
     @Test
     void practiceFormNotValidMobile() {
-        open("/automation-practice-form");
+        practiceFormPage.open()
+                .setFirstName(FIRST_NAME)
+                .setLastName(LAST_NAME)
+                .setGender(GENDER)
+                .setUserNumber(INVALID_PHONE)
+                .submit();
 
-        $("#firstName").setValue("Don");
-        $("#lastName").setValue("Simon");
-        $("#genterWrapper").$(byText("Male")).click();
-        $("#userNumber").clear();
-
-        $("#submit").scrollTo().click();
-
-        $("#userNumber").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        practiceFormPage.checkUserNumberBorderColor("rgb(220, 53, 69)");
     }
-
 
     @Test
     void practiceFormInvalidEmail() {
-        open("/automation-practice-form");
+        practiceFormPage.open()
+                .setFirstName(FIRST_NAME)
+                .setLastName(LAST_NAME)
+                .setGender(GENDER)
+                .setUserNumber(PHONE)
+                .setUserEmail(INVALID_EMAIL)
+                .submit();
 
-        $("#firstName").setValue("Абоба");
-        $("#lastName").setValue("Абобович");
-        $("#genterWrapper").$(byText("Male")).click();
-        $("#userNumber").setValue("8999666666");
-
-        $("#userEmail").setValue("notanemail");
-
-        $("#submit").scrollTo().click();
-
-        $("#userEmail").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        practiceFormPage.checkUserEmailBorderColor("rgb(220, 53, 69)");
     }
 
     @Test
     void practiceFormUnknownSubject() {
-        open("/automation-practice-form");
+        practiceFormPage.open()
+                .setFirstName(FIRST_NAME)
+                .setLastName(LAST_NAME)
+                .setGender(GENDER)
+                .setUserNumber(PHONE)
+                .typeSubject(UNKNOWN_SUBJECT)
+                .submit();
 
-        $("#firstName").setValue("Артемий");
-        $("#lastName").setValue("Бурах");
-        $("#genterWrapper").$(byText("Male")).click();
-        $("#userNumber").setValue("8999666666");
-
-        $("#subjectsInput").setValue("КвантоваяФизика").pressEnter();
-
-        $("#submit").scrollTo().click();
-
-        $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
-        $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text("Артемий Бурах"));
-        $(".table-responsive").$(byText("Gender")).parent().shouldHave(text("Male"));
-        $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text("8999666666"));
-        $(".table-responsive").$(byText("Subjects")).parent().shouldHave(text("КвантоваяФизика"));
-
+        assertEquals(SUBMIT_TITLE, practiceFormPage.getModalTitle());
+        assertEquals(USER_NAME, practiceFormPage.getResutTableStudentName());
+        assertEquals(GENDER, practiceFormPage.getResutTableGender());
+        assertEquals(PHONE, practiceFormPage.getResutTableMobile());
+        assertEquals("", practiceFormPage.getResutTableSubjects());
     }
 }
