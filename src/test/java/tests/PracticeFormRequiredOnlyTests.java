@@ -1,28 +1,28 @@
 package tests;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.*;
+import static helpers.TestData.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import helpers.TestBase;
 import org.junit.jupiter.api.Test;
+import pages.PracticeFormPage;
 
 public class PracticeFormRequiredOnlyTests extends TestBase {
 
+    PracticeFormPage practiceFormPage = new PracticeFormPage();
+
     @Test
     void practiceFormRequiredOnlyTest() {
-        open("/automation-practice-form");
+        practiceFormPage.open()
+                .setFirstName(FIRST_NAME)
+                .setLastName(LAST_NAME)
+                .setGender(GENDER)
+                .setUserNumber(PHONE)
+                .submit();
 
-        $("#firstName").setValue("Don");
-        $("#lastName").setValue("Simon");
-        $("#genterWrapper").$(byText("Male")).click();
-        $("#userNumber").setValue("8999666666");
-
-        $("#submit").scrollTo().click();
-
-        $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
-
-        $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text("Don Simon"));
-        $(".table-responsive").$(byText("Gender")).parent().shouldHave(text("Male"));
-        $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text("8999666666"));
+        assertEquals(SUBMIT_TITLE, practiceFormPage.getModalTitle());
+        assertEquals(USER_NAME, practiceFormPage.getResutTableStudentName());
+        assertEquals(GENDER, practiceFormPage.getResutTableGender());
+        assertEquals(PHONE, practiceFormPage.getResutTableMobile());
     }
 }

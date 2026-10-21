@@ -1,48 +1,43 @@
 package tests;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.*;
+import static helpers.TestData.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import helpers.TestBase;
 import org.junit.jupiter.api.Test;
+import pages.PracticeFormPage;
 
 public class PracticeFormSuccessTests extends TestBase {
 
+    PracticeFormPage practiceFormPage = new PracticeFormPage();
+
     @Test
     void practiceFormSuccessTest() {
-        open("/automation-practice-form");
+        practiceFormPage.open()
+                .setFirstName(FIRST_NAME)
+                .setLastName(LAST_NAME)
+                .setUserEmail(USER_EMAIL)
+                .setGender(GENDER)
+                .setUserNumber(PHONE)
+                .setDateOfBirth(BIRTH_DAY, BIRTH_MONTH, BIRTH_YEAR)
+                .setSubject(SUBJECT)
+                .setHobby(HOBBY)
+                .uploadPicture(PICTURE)
+                .setCurrentAddress(FULL_ADDRESS)
+                .setState(STATE)
+                .setCity(CITY)
+                .submit();
 
-        $("#firstName").setValue("Don");
-        $("#lastName").setValue("Simon");
-        $("#userEmail").setValue("dobroipozitiv@gmail.com");
-        $("#genterWrapper").$(byText("Male")).click();
-        $("#userNumber").setValue("89996666666");
-
-        $("#dateOfBirthInput").click();
-        $(".react-datepicker__month-select").selectOption("July");
-        $(".react-datepicker__year-select").selectOption("1996");
-        $(".react-datepicker__day--018").click();
-
-        $("#subjectsInput").setValue("Maths").pressEnter();
-        $("#hobbiesWrapper").$(byText("Reading")).click();
-        $("#uploadPicture").uploadFromClasspath("dog.jpg");
-        $("#currentAddress").setValue("Улица Пушкина, дом Колотушкина, 7");
-        $("#react-select-3-input").setValue("NCR").pressEnter();
-        $("#react-select-4-input").setValue("Delhi").pressEnter();
-
-        $("#submit").scrollTo().click();
-
-        $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
-
-        $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text("Don Simon"));
-        $(".table-responsive").$(byText("Student Email")).parent().shouldHave(text("dobroipozitiv@gmail.com"));
-        $(".table-responsive").$(byText("Gender")).parent().shouldHave(text("Male"));
-        $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text("8999666666"));
-        $(".table-responsive").$(byText("Date of Birth")).parent().shouldHave(text("18 July,1996"));
-        $(".table-responsive").$(byText("Subjects")).parent().shouldHave(text("Maths"));
-        $(".table-responsive").$(byText("Hobbies")).parent().shouldHave(text("Reading"));
-        $(".table-responsive").$(byText("Picture")).parent().shouldHave(text("dog.jpg"));
-        $(".table-responsive").$(byText("Address")).parent().shouldHave(text("Улица Пушкина, дом Колотушкина, 7"));
-        $(".table-responsive").$(byText("State and City")).parent().shouldHave(text("NCR Delhi"));
+        assertEquals(SUBMIT_TITLE, practiceFormPage.getModalTitle());
+        assertEquals(USER_NAME, practiceFormPage.getResutTableStudentName());
+        assertEquals(USER_EMAIL, practiceFormPage.getResutTableStudentEmail());
+        assertEquals(GENDER, practiceFormPage.getResutTableGender());
+        assertEquals(PHONE, practiceFormPage.getResutTableMobile());
+        assertEquals(BIRTH_DATE, practiceFormPage.getResutTableDateOfBirth());
+        assertEquals(SUBJECT, practiceFormPage.getResutTableSubjects());
+        assertEquals(HOBBY, practiceFormPage.getResutTableHobbies());
+        assertEquals(PICTURE, practiceFormPage.getResutTablePicture());
+        assertEquals(FULL_ADDRESS, practiceFormPage.getResutTableAddress());
+        assertEquals(STATE + " " + CITY, practiceFormPage.getResutTableStateAndCity());
     }
 }
