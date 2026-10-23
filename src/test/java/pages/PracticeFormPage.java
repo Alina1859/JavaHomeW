@@ -26,17 +26,7 @@ public class PracticeFormPage {
             cityInput = $("#react-select-4-input"),
             submit = $("#submit"),
             modalTitle = $("#example-modal-sizes-title-lg"),
-            resultTable = $(".table-responsive"),
-            resultTableStudentName = resultTable.$(byText("Student Name")),
-            resultTableGender = resultTable.$(byText("Gender")),
-            resultTableMobile = resultTable.$(byText("Mobile")),
-            resultTableSubjects = resultTable.$(byText("Subjects")),
-            resultTableStudentEmail = resultTable.$(byText("Student Email")),
-            resultTableDateOfBirth = resultTable.$(byText("Date of Birth")),
-            resultTableHobbies = resultTable.$(byText("Hobbies")),
-            resultTablePicture = resultTable.$(byText("Picture")),
-            resultTableAddress = resultTable.$(byText("Address")),
-            resultTableStateAndCity = resultTable.$(byText("State and City"));
+            resultTable = $(".table-responsive");
 
     private SelenideElement daySelect(int day) {
         String prefix = day < 10 ? "00" : "0";
@@ -74,9 +64,13 @@ public class PracticeFormPage {
         return this;
     }
 
-    public PracticeFormPage checkGenderColor(String gender, String color) {
+    public PracticeFormPage waitForGenderColor(String gender, String color) {
         genderWrapper.$(byText(gender)).shouldHave(cssValue("color", color));
         return this;
+    }
+
+    public String getGenderColor(String gender) {
+        return genderWrapper.$(byText(gender)).getCssValue("color");
     }
 
     public PracticeFormPage setFirstName(String value) {
@@ -143,44 +137,8 @@ public class PracticeFormPage {
         return modalTitle.shouldBe(visible).getText();
     }
 
-    public String getResutTableStudentName() {
-        return resultTableStudentName.sibling(0).getText();
-    }
-
-    public String getResutTableGender() {
-        return resultTableGender.sibling(0).getText();
-    }
-
-    public String getResutTableMobile() {
-        return resultTableMobile.sibling(0).getText();
-    }
-
-    public String getResutTableSubjects() {
-        return resultTableSubjects.sibling(0).getText();
-    }
-
-    public String getResutTableStudentEmail() {
-        return resultTableStudentEmail.sibling(0).getText();
-    }
-
-    public String getResutTableDateOfBirth() {
-        return resultTableDateOfBirth.sibling(0).getText();
-    }
-
-    public String getResutTableHobbies() {
-        return resultTableHobbies.sibling(0).getText();
-    }
-
-    public String getResutTablePicture() {
-        return resultTablePicture.sibling(0).getText();
-    }
-
-    public String getResutTableAddress() {
-        return resultTableAddress.sibling(0).getText();
-    }
-
-    public String getResutTableStateAndCity() {
-        return resultTableStateAndCity.sibling(0).getText();
+    public String getResult(String field) {
+        return resultTable.shouldBe(visible).$(byText(field)).sibling(0).getText();
     }
 
     public PracticeFormPage setDateOfBirth(int day, String month, String year) {

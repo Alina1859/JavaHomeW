@@ -4,6 +4,7 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Condition.visible;
 
 public class TextBoxPage {
     private final SelenideElement
@@ -47,24 +48,23 @@ public class TextBoxPage {
         return this;
     }
 
-    public String getOutputName(){
-        return outputName.getText();
+    public String getOutputName() {
+        return outputName.shouldBe(visible).getText();
     }
 
     public String getOutputEmail() {
-        return outputEmail.getText();
+        return outputEmail.shouldBe(visible).getText();
     }
 
     public String getOutputCurrentAddress() {
-        return outputCurrentAddress.getText();
+        return outputCurrentAddress.shouldBe(visible).getText();
     }
 
     public String getOutputPermanentAddress() {
-        return outputPermanentAddress.getText();
+        return outputPermanentAddress.shouldBe(visible).getText();
     }
 
     public String getUserEmailClass() {
         return userEmail.getAttribute("class");
     }
-
 }
