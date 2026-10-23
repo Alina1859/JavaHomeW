@@ -5,61 +5,67 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import helpers.TestBase;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.api.DisplayName;
 import pages.PracticeFormPage;
 
+@DisplayName("Форма: валидация полей")
 public class PracticeFormNegativeTests extends TestBase {
 
-    PracticeFormPage practiceFormPage = new PracticeFormPage();
+    private final PracticeFormPage practiceFormPage = new PracticeFormPage();
 
     @Test
+    @DisplayName("Пустая форма подсвечивает обязательные поля и не отправляется")
     void practiceFormRequiredNotFilledTest() {
         practiceFormPage.open().submit();
-
         practiceFormPage.checkFirstNameBorderColor("rgb(220, 53, 69)");
         practiceFormPage.checkLastNameBorderColor("rgb(220, 53, 69)");
         practiceFormPage.checkUserNumberBorderColor("rgb(220, 53, 69)");
-        practiceFormPage.checkGenderColor(GENDER, "rgba(220, 53, 69, 1)");
+        practiceFormPage.waitForGenderColor(GENDER, "rgba(220, 53, 69, 1)");
+        assertEquals("rgba(220, 53, 69, 1)", practiceFormPage.getGenderColor(GENDER));
     }
 
-    @Test
-    void practiceFormNotValidMobile() {
+    @CsvSource({PHONE_ONE_DIGIT, PHONE_FIVE_DIGITS, PHONE_NINE_DIGITS})
+    @ParameterizedTest(name = "Короткий номер {0} отклоняется")
+    void practiceFormNotValidMobile(String phone) {
         practiceFormPage.open()
                 .setFirstName(FIRST_NAME)
                 .setLastName(LAST_NAME)
                 .setGender(GENDER)
-                .setUserNumber(INVALID_PHONE)
+                .setUserNumber(phone)
                 .submit();
-
         practiceFormPage.checkUserNumberBorderColor("rgb(220, 53, 69)");
     }
 
-    @Test
-    void practiceFormInvalidEmail() {
+    @CsvSource({EMAIL_WITHOUT_AT, EMAIL_WITHOUT_DOMAIN, EMAIL_WITHOUT_NAME})
+    @ParameterizedTest(name = "Некорректный email {0} отклоняется")
+    void practiceFormInvalidEmail(String email) {
         practiceFormPage.open()
                 .setFirstName(FIRST_NAME)
                 .setLastName(LAST_NAME)
                 .setGender(GENDER)
                 .setUserNumber(PHONE)
-                .setUserEmail(INVALID_EMAIL)
+                .setUserEmail(email)
                 .submit();
-
         practiceFormPage.checkUserEmailBorderColor("rgb(220, 53, 69)");
     }
 
-    @Test
-    void practiceFormUnknownSubject() {
+    @CsvSource({UNKNOWN_SUBJECT_CYRILLIC, UNKNOWN_SUBJECT_LATIN})
+    @ParameterizedTest(name = "Неизвестный предмет {0} не попадает в результат")
+    void practiceFormUnknownSubject(String subject) {
         practiceFormPage.open()
                 .setFirstName(FIRST_NAME)
                 .setLastName(LAST_NAME)
                 .setGender(GENDER)
                 .setUserNumber(PHONE)
-                .typeSubject(UNKNOWN_SUBJECT)
+                .typeSubject(subject)
                 .submit();
 
         assertEquals(SUBMIT_TITLE, practiceFormPage.getModalTitle());
-        assertEquals(USER_NAME, practiceFormPage.getResutTableStudentName());
-        assertEquals(GENDER, practiceFormPage.getResutTableGender());
-        assertEquals(PHONE, practiceFormPage.getResutTableMobile());
-        assertEquals("", practiceFormPage.getResutTableSubjects());
+        assertEquals(USER_NAME, practiceFormPage.getResult("Student Name"));
+        assertEquals(GENDER, practiceFormPage.getResult("Gender"));
+        assertEquals(PHONE, practiceFormPage.getResult("Mobile"));
+        assertEquals("", practiceFormPage.getResult("Subjects"));
     }
 }

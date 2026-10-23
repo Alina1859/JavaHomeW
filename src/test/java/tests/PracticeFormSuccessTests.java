@@ -4,40 +4,55 @@ import static helpers.TestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import helpers.TestBase;
-import org.junit.jupiter.api.Test;
+import java.util.stream.Stream;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.api.DisplayName;
 import pages.PracticeFormPage;
 
+@DisplayName("Форма: заполнение всех полей")
 public class PracticeFormSuccessTests extends TestBase {
 
-    PracticeFormPage practiceFormPage = new PracticeFormPage();
+    private final PracticeFormPage practiceFormPage = new PracticeFormPage();
 
-    @Test
-    void practiceFormSuccessTest() {
+    static Stream<Arguments> validFormData() {
+        return Stream.of(
+                Arguments.of(FIRST_NAME, LAST_NAME, USER_EMAIL, FULL_ADDRESS, STATE, CITY),
+                Arguments.of(SECOND_FIRST_NAME, SECOND_LAST_NAME, SECOND_USER_EMAIL,
+                        SECOND_FULL_ADDRESS, SECOND_STATE, SECOND_CITY)
+        );
+    }
+
+    @MethodSource("validFormData")
+    @ParameterizedTest(name = "Полная форма: {0} {1}, штат {4}, город {5}")
+    void practiceFormSuccessTest(String firstName, String lastName, String email,
+                                 String address, String state, String city) {
         practiceFormPage.open()
-                .setFirstName(FIRST_NAME)
-                .setLastName(LAST_NAME)
-                .setUserEmail(USER_EMAIL)
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setUserEmail(email)
                 .setGender(GENDER)
                 .setUserNumber(PHONE)
                 .setDateOfBirth(BIRTH_DAY, BIRTH_MONTH, BIRTH_YEAR)
                 .setSubject(SUBJECT)
                 .setHobby(HOBBY)
                 .uploadPicture(PICTURE)
-                .setCurrentAddress(FULL_ADDRESS)
-                .setState(STATE)
-                .setCity(CITY)
+                .setCurrentAddress(address)
+                .setState(state)
+                .setCity(city)
                 .submit();
 
         assertEquals(SUBMIT_TITLE, practiceFormPage.getModalTitle());
-        assertEquals(USER_NAME, practiceFormPage.getResutTableStudentName());
-        assertEquals(USER_EMAIL, practiceFormPage.getResutTableStudentEmail());
-        assertEquals(GENDER, practiceFormPage.getResutTableGender());
-        assertEquals(PHONE, practiceFormPage.getResutTableMobile());
-        assertEquals(BIRTH_DATE, practiceFormPage.getResutTableDateOfBirth());
-        assertEquals(SUBJECT, practiceFormPage.getResutTableSubjects());
-        assertEquals(HOBBY, practiceFormPage.getResutTableHobbies());
-        assertEquals(PICTURE, practiceFormPage.getResutTablePicture());
-        assertEquals(FULL_ADDRESS, practiceFormPage.getResutTableAddress());
-        assertEquals(STATE + " " + CITY, practiceFormPage.getResutTableStateAndCity());
+        assertEquals(firstName + " " + lastName, practiceFormPage.getResult("Student Name"));
+        assertEquals(email, practiceFormPage.getResult("Student Email"));
+        assertEquals(GENDER, practiceFormPage.getResult("Gender"));
+        assertEquals(PHONE, practiceFormPage.getResult("Mobile"));
+        assertEquals(BIRTH_DATE, practiceFormPage.getResult("Date of Birth"));
+        assertEquals(SUBJECT, practiceFormPage.getResult("Subjects"));
+        assertEquals(HOBBY, practiceFormPage.getResult("Hobbies"));
+        assertEquals(PICTURE, practiceFormPage.getResult("Picture"));
+        assertEquals(address, practiceFormPage.getResult("Address"));
+        assertEquals(state + " " + city, practiceFormPage.getResult("State and City"));
     }
 }
