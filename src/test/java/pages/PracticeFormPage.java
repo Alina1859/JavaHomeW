@@ -3,6 +3,7 @@ package pages;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import pages.components.CalendarComponent;
+import pages.components.ResultTableComponent;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Condition.cssValue;
@@ -11,6 +12,7 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class PracticeFormPage {
     CalendarComponent calendar = new CalendarComponent();
+    ResultTableComponent resultTable = new ResultTableComponent();
 
     private final SelenideElement
             firstName = $("#firstName"),
@@ -25,8 +27,7 @@ public class PracticeFormPage {
             stateInput = $("#react-select-3-input"),
             cityInput = $("#react-select-4-input"),
             submit = $("#submit"),
-            modalTitle = $("#example-modal-sizes-title-lg"),
-            resultTable = $(".table-responsive");
+            modalTitle = $("#example-modal-sizes-title-lg");
 
     public PracticeFormPage open() {
         Selenide.open("/automation-practice-form");
@@ -137,7 +138,7 @@ public class PracticeFormPage {
     }
 
     public String getResult(String field) {
-        return resultTable.shouldBe(visible).$(byText(field)).sibling(0).getText();
+        return resultTable.getResult(field);
     }
 
 }
