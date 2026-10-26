@@ -2,6 +2,7 @@ package pages;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import pages.components.CalendarComponent;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Condition.cssValue;
@@ -9,15 +10,14 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 
 public class PracticeFormPage {
+    CalendarComponent calendar = new CalendarComponent();
+
     private final SelenideElement
             firstName = $("#firstName"),
             lastName = $("#lastName"),
             userEmail = $("#userEmail"),
             genderWrapper = $("#genterWrapper"),
             userNumber = $("#userNumber"),
-            dateOfBirthInput = $("#dateOfBirthInput"),
-            monthSelect = $(".react-datepicker__month-select"),
-            yearSelect = $(".react-datepicker__year-select"),
             subjectsInput = $("#subjectsInput"),
             hobbiesWrapper = $("#hobbiesWrapper"),
             uploadPicture = $("#uploadPicture"),
@@ -27,12 +27,6 @@ public class PracticeFormPage {
             submit = $("#submit"),
             modalTitle = $("#example-modal-sizes-title-lg"),
             resultTable = $(".table-responsive");
-
-    private SelenideElement daySelect(int day) {
-        String prefix = day < 10 ? "00" : "0";
-        return $(".react-datepicker__day--" + prefix + day
-                + ":not(.react-datepicker__day--outside-month)");
-    }
 
     public PracticeFormPage open() {
         Selenide.open("/automation-practice-form");
@@ -133,6 +127,11 @@ public class PracticeFormPage {
         return this;
     }
 
+    public PracticeFormPage setDateOfBirth(int day, String month, String year) {
+        calendar.setDateOfBirth(day, month, year);
+        return this;
+    }
+
     public String getModalTitle() {
         return modalTitle.shouldBe(visible).getText();
     }
@@ -141,11 +140,4 @@ public class PracticeFormPage {
         return resultTable.shouldBe(visible).$(byText(field)).sibling(0).getText();
     }
 
-    public PracticeFormPage setDateOfBirth(int day, String month, String year) {
-        dateOfBirthInput.click();
-        monthSelect.selectOption(month);
-        yearSelect.selectOption(year);
-        daySelect(day).click();
-        return this;
-    }
 }

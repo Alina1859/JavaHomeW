@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.api.DisplayName;
 import pages.PracticeFormPage;
+import pages.components.CalendarComponent;
 
 @DisplayName("Форма: заполнение всех полей")
 public class PracticeFormSuccessTests extends TestBase {
