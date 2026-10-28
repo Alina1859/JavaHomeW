@@ -7,6 +7,8 @@ import pages.components.ResultTableComponent;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Condition.cssValue;
+import static com.codeborne.selenide.Condition.appear;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 
@@ -27,6 +29,7 @@ public class PracticeFormPage {
             stateInput = $("#react-select-3-input"),
             cityInput = $("#react-select-4-input"),
             submit = $("#submit"),
+            modalDialog = $(".modal-dialog"),
             modalTitle = $("#example-modal-sizes-title-lg");
 
     public PracticeFormPage open() {
@@ -133,8 +136,10 @@ public class PracticeFormPage {
         return this;
     }
 
-    public String getModalTitle() {
-        return modalTitle.shouldBe(visible).getText();
+    public PracticeFormPage checkModalTitle(String expectedTitle) {
+        modalDialog.should(appear);
+        modalTitle.shouldHave(text(expectedTitle));
+        return this;
     }
 
     public String getResult(String field) {

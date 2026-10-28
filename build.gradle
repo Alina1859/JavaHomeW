@@ -10,7 +10,8 @@ dependencies {
     testImplementation (
             "com.codeborne:selenide:7.16.1",
             "org.junit.jupiter:junit-jupiter:5.11.4",
-            "org.slf4j:slf4j-simple:2.0.13"
+            "org.slf4j:slf4j-simple:2.0.13",
+            'net.datafaker:datafaker:2.7.0'
     )
     testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }

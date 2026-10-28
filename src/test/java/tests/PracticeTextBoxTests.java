@@ -1,13 +1,13 @@
 package tests;
 
 import helpers.TestBase;
+import net.datafaker.Faker;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvFileSource;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import pages.TextBoxPage;
 
-import static helpers.TestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -16,9 +16,14 @@ public class PracticeTextBoxTests extends TestBase {
 
     private final TextBoxPage textBoxPage = new TextBoxPage();
 
-    @CsvFileSource(resources = "/text_box_users.csv", numLinesToSkip = 1)
-    @ParameterizedTest(name = "Отправка всех полей: {0}, {1}")
-    void textBoxAllFieldsTest(String name, String email, String currentAddress, String permanentAddress) {
+    @Test
+    void textBoxAllFieldsTest() {
+        Faker faker = new Faker();
+        String name = faker.name().fullName();
+        String email = faker.internet().emailAddress();
+        String currentAddress = faker.address().streetAddress();
+        String permanentAddress = faker.address().streetAddress();
+
         textBoxPage.open()
                 .setUserName(name)
                 .setUserEmail(email)
@@ -32,16 +37,18 @@ public class PracticeTextBoxTests extends TestBase {
         assertEquals("Permananet Address :" + permanentAddress, textBoxPage.getOutputPermanentAddress());
     }
 
-    @CsvSource({EMAIL_WITHOUT_AT, EMAIL_WITHOUT_DOMAIN, EMAIL_WITHOUT_NAME})
     @ParameterizedTest(name = "Некорректный email {0} отклоняется")
+    @MethodSource("helpers.TestData#invalidEmails")
     void textBoxInvalidEmailIsRejected(String email) {
+        Faker faker = new Faker();
         textBoxPage.open()
-                .setUserName(USER_NAME)
+                .setUserName(faker.name().fullName())
                 .setUserEmail(email)
-                .setCurrentAddress(CURRENT_ADDRESS)
-                .setPermanentAddress(PERMANENT_ADDRESS)
+                .setCurrentAddress(faker.address().streetAddress())
+                .setPermanentAddress(faker.address().streetAddress())
                 .submit();
 
-        assertTrue(textBoxPage.getUserEmailClass().contains("field-error"));
+        assertTrue(textBoxPage.getUserEmailClass().contains("field-error"),
+                "Email should be rejected: " + email);
     }
 }

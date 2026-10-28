@@ -4,11 +4,15 @@ import static helpers.TestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import helpers.TestBase;
+import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.api.DisplayName;
 import pages.PracticeFormPage;
+
+import static utils.RandomUtils.getRandomItemFromList;
 
 @DisplayName("Форма: валидация полей")
 public class PracticeFormNegativeTests extends TestBase {
@@ -18,34 +22,46 @@ public class PracticeFormNegativeTests extends TestBase {
     @Test
     @DisplayName("Пустая форма подсвечивает обязательные поля и не отправляется")
     void practiceFormRequiredNotFilledTest() {
+        String gender = getRandomItemFromList(GENDERS);
         practiceFormPage.open().submit();
         practiceFormPage.checkFirstNameBorderColor("rgb(220, 53, 69)");
         practiceFormPage.checkLastNameBorderColor("rgb(220, 53, 69)");
         practiceFormPage.checkUserNumberBorderColor("rgb(220, 53, 69)");
-        practiceFormPage.waitForGenderColor(GENDER, "rgba(220, 53, 69, 1)");
-        assertEquals("rgba(220, 53, 69, 1)", practiceFormPage.getGenderColor(GENDER));
+        practiceFormPage.waitForGenderColor(gender, "rgba(220, 53, 69, 1)");
+        assertEquals("rgba(220, 53, 69, 1)", practiceFormPage.getGenderColor(gender));
     }
 
-    @CsvSource({PHONE_ONE_DIGIT, PHONE_FIVE_DIGITS, PHONE_NINE_DIGITS})
+    @MethodSource("helpers.TestData#invalidPhones")
     @ParameterizedTest(name = "Короткий номер {0} отклоняется")
     void practiceFormNotValidMobile(String phone) {
+        Faker faker = new Faker();
+        String firstName = faker.name().firstName();
+        String lastName = faker.name().lastName();
+        String gender = getRandomItemFromList(GENDERS);
+
         practiceFormPage.open()
-                .setFirstName(FIRST_NAME)
-                .setLastName(LAST_NAME)
-                .setGender(GENDER)
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setGender(gender)
                 .setUserNumber(phone)
                 .submit();
         practiceFormPage.checkUserNumberBorderColor("rgb(220, 53, 69)");
     }
 
-    @CsvSource({EMAIL_WITHOUT_AT, EMAIL_WITHOUT_DOMAIN, EMAIL_WITHOUT_NAME})
+    @MethodSource("helpers.TestData#invalidEmails")
     @ParameterizedTest(name = "Некорректный email {0} отклоняется")
     void practiceFormInvalidEmail(String email) {
+        Faker faker = new Faker();
+        String firstName = faker.name().firstName();
+        String lastName = faker.name().lastName();
+        String phone = faker.number().digits(10);
+        String gender = getRandomItemFromList(GENDERS);
+
         practiceFormPage.open()
-                .setFirstName(FIRST_NAME)
-                .setLastName(LAST_NAME)
-                .setGender(GENDER)
-                .setUserNumber(PHONE)
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setGender(gender)
+                .setUserNumber(phone)
                 .setUserEmail(email)
                 .submit();
         practiceFormPage.checkUserEmailBorderColor("rgb(220, 53, 69)");
@@ -54,18 +70,24 @@ public class PracticeFormNegativeTests extends TestBase {
     @CsvSource({UNKNOWN_SUBJECT_CYRILLIC, UNKNOWN_SUBJECT_LATIN})
     @ParameterizedTest(name = "Неизвестный предмет {0} не попадает в результат")
     void practiceFormUnknownSubject(String subject) {
+        Faker faker = new Faker();
+        String firstName = faker.name().firstName();
+        String lastName = faker.name().lastName();
+        String phone = faker.number().digits(10);
+        String gender = getRandomItemFromList(GENDERS);
+
         practiceFormPage.open()
-                .setFirstName(FIRST_NAME)
-                .setLastName(LAST_NAME)
-                .setGender(GENDER)
-                .setUserNumber(PHONE)
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setGender(gender)
+                .setUserNumber(phone)
                 .typeSubject(subject)
                 .submit();
 
-        assertEquals(SUBMIT_TITLE, practiceFormPage.getModalTitle());
-        assertEquals(USER_NAME, practiceFormPage.getResult("Student Name"));
-        assertEquals(GENDER, practiceFormPage.getResult("Gender"));
-        assertEquals(PHONE, practiceFormPage.getResult("Mobile"));
+        practiceFormPage.checkModalTitle(SUBMIT_TITLE);
+        assertEquals(firstName + " " + lastName, practiceFormPage.getResult("Student Name"));
+        assertEquals(gender, practiceFormPage.getResult("Gender"));
+        assertEquals(phone, practiceFormPage.getResult("Mobile"));
         assertEquals("", practiceFormPage.getResult("Subjects"));
     }
 }
