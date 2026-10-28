@@ -1,43 +1,55 @@
 package helpers;
 
+import java.util.List;
+import java.util.stream.Stream;
+
 public class TestData {
 
-  public static final String FIRST_NAME = "Don";
-  public static final String LAST_NAME = "Simon";
-  public static final String USER_NAME = FIRST_NAME + " " + LAST_NAME;
-  public static final String USER_EMAIL = "dobroipozitiv@gmail.com";
-  public static final String CURRENT_ADDRESS = "Улица Пушкина";
-  public static final String PERMANENT_ADDRESS = "Улица Колотушкина";
-
-  public static final String GENDER = "Male";
-  public static final String GENDER_FEMALE = "Female";
-  public static final String GENDER_OTHER = "Other";
-  public static final String PHONE = "8999666666";
-  public static final int BIRTH_DAY = 18;
-  public static final String BIRTH_MONTH = "July";
-  public static final String BIRTH_YEAR = "1996";
-  public static final String BIRTH_DATE = BIRTH_DAY + " " + BIRTH_MONTH + "," + BIRTH_YEAR;
-  public static final String SUBJECT = "Maths";
-  public static final String HOBBY = "Reading";
+  public static final List<String> SUBJECTS = List.of(
+          "Maths", "Accounting", "Arts", "Social Studies", "Biology", "Chemistry",
+          "Computer Science", "Commerce", "Economics", "English", "Hindi", "History",
+          "Civics", "Physics"
+  );
+  public static final List<String> HOBBIES = List.of("Sports", "Reading", "Music");
+  public static final List<String> GENDERS = List.of("Male", "Female", "Other");
+  public static final List<List<String>> STATE_CITIES = List.of(
+          List.of("NCR", "Delhi"),
+          List.of("NCR", "Gurgaon"),
+          List.of("NCR", "Noida"),
+          List.of("Uttar Pradesh", "Agra"),
+          List.of("Uttar Pradesh", "Lucknow"),
+          List.of("Uttar Pradesh", "Merrut"),
+          List.of("Haryana", "Karnal"),
+          List.of("Haryana", "Panipat"),
+          List.of("Rajasthan", "Jaipur"),
+          List.of("Rajasthan", "Jaiselmer"),
+          List.of("Rajasthan", "Udaipur")
+  );
   public static final String PICTURE = "dog.jpg";
-  public static final String FULL_ADDRESS = "Улица Пушкина, дом Колотушкина, 7";
-  public static final String STATE = "NCR";
-  public static final String CITY = "Delhi";
 
-  public static final String SECOND_FIRST_NAME = "Anna";
-  public static final String SECOND_LAST_NAME = "Petrova";
-  public static final String SECOND_USER_EMAIL = "anna@example.com";
-  public static final String SECOND_FULL_ADDRESS = "10 Green Street";
-  public static final String SECOND_STATE = "Uttar Pradesh";
-  public static final String SECOND_CITY = "Lucknow";
+  public static Stream<String> genders() {
+    return GENDERS.stream();
+  }
 
-  public static final String EMAIL_WITHOUT_AT = "notanemail";
-  public static final String EMAIL_WITHOUT_DOMAIN = "user@";
-  public static final String EMAIL_WITHOUT_NAME = "@example.com";
+  public static final List<String> INVALID_EMAILS = List.of(
+          "notanemail",
+          "user@",
+          "@example.com"
+  );
 
-  public static final String PHONE_ONE_DIGIT = "1";
-  public static final String PHONE_FIVE_DIGITS = "12345";
-  public static final String PHONE_NINE_DIGITS = "123456789";
+  public static Stream<String> invalidEmails() {
+    return INVALID_EMAILS.stream();
+  }
+
+  public static final List<String> INVALID_PHONES = List.of(
+          "1",
+          "12345",
+          "123456789"
+  );
+
+  public static Stream<String> invalidPhones() {
+    return INVALID_PHONES.stream();
+  }
 
   public static final String UNKNOWN_SUBJECT_CYRILLIC = "КвантоваяФизика";
   public static final String UNKNOWN_SUBJECT_LATIN = "UnknownSubject";
