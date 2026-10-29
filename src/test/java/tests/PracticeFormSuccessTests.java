@@ -1,13 +1,12 @@
 package tests;
 
 import static helpers.TestData.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import helpers.TestBase;
 import helpers.DataGenerator;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
+import models.ValidFormData;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import pages.PracticeFormPage;
 
 @DisplayName("Форма: заполнение всех полей")
@@ -15,9 +14,11 @@ public class PracticeFormSuccessTests extends TestBase {
 
     private final PracticeFormPage practiceFormPage = new PracticeFormPage();
 
-    @MethodSource("helpers.DataGenerator#validFormData")
-    @ParameterizedTest(name = "Полная форма: {0}")
-    void practiceFormSuccessTest(DataGenerator.ValidFormData data) {
+    @Test
+    @DisplayName("Успешная отправка формы со всеми полями")
+    void practiceFormSuccessTest() {
+        ValidFormData data = DataGenerator.randomValidFormData();
+
         practiceFormPage.open()
                 .setFirstName(data.firstName())
                 .setLastName(data.lastName())
@@ -33,16 +34,18 @@ public class PracticeFormSuccessTests extends TestBase {
                 .setCity(data.city())
                 .submit();
 
-        practiceFormPage.checkModalTitle(SUBMIT_TITLE);
-        assertEquals(data.firstName() + " " + data.lastName(), practiceFormPage.getResult("Student Name"));
-        assertEquals(data.email(), practiceFormPage.getResult("Student Email"));
-        assertEquals(data.gender(), practiceFormPage.getResult("Gender"));
-        assertEquals(data.phone(), practiceFormPage.getResult("Mobile"));
-        assertEquals(data.formattedBirthDate(), practiceFormPage.getResult("Date of Birth"));
-        assertEquals(data.subject(), practiceFormPage.getResult("Subjects"));
-        assertEquals(data.hobby(), practiceFormPage.getResult("Hobbies"));
-        assertEquals(PICTURE, practiceFormPage.getResult("Picture"));
-        assertEquals(data.address(), practiceFormPage.getResult("Address"));
-        assertEquals(data.state() + " " + data.city(), practiceFormPage.getResult("State and City"));
+        practiceFormPage.checkModalTitle(SUBMIT_TITLE)
+                .checkResult(data.firstName() + " " + data.lastName(),
+                        practiceFormPage.getResult("Student Name"))
+                .checkResult(data.email(), practiceFormPage.getResult("Student Email"))
+                .checkResult(data.gender(), practiceFormPage.getResult("Gender"))
+                .checkResult(data.phone(), practiceFormPage.getResult("Mobile"))
+                .checkResult(data.formattedBirthDate(), practiceFormPage.getResult("Date of Birth"))
+                .checkResult(data.subject(), practiceFormPage.getResult("Subjects"))
+                .checkResult(data.hobby(), practiceFormPage.getResult("Hobbies"))
+                .checkResult(PICTURE, practiceFormPage.getResult("Picture"))
+                .checkResult(data.address(), practiceFormPage.getResult("Address"))
+                .checkResult(data.state() + " " + data.city(),
+                        practiceFormPage.getResult("State and City"));
     }
 }

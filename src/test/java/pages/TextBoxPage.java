@@ -5,6 +5,8 @@ import com.codeborne.selenide.SelenideElement;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.cssClass;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TextBoxPage {
     private final SelenideElement
@@ -64,7 +66,13 @@ public class TextBoxPage {
         return outputPermanentAddress.shouldBe(visible).getText();
     }
 
-    public String getUserEmailClass() {
-        return userEmail.getAttribute("class");
+    public TextBoxPage checkResult(String expected, String actual) {
+        assertEquals(expected, actual);
+        return this;
+    }
+
+    public TextBoxPage checkUserEmailHasError() {
+        userEmail.shouldHave(cssClass("field-error"));
+        return this;
     }
 }

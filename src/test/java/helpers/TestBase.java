@@ -8,13 +8,15 @@ import org.junit.jupiter.api.BeforeAll;
 
 public class TestBase {
 
-  @BeforeAll
-  static void setUpAll() {
-    Configuration.baseUrl = "https://demoqa.com";
-  }
+    @BeforeAll
+    static void setUpAll() {
+        Configuration.baseUrl = "https://demoqa.com";
+        Configuration.browserSize = "1920x1080";
+        Configuration.pageLoadStrategy = "eager";
+    }
 
-  @AfterEach
-  void tearDown() {
-    closeWebDriver();
-  }
+    @AfterEach
+    void tearDown() {
+        closeWebDriver();
+    }
 }
