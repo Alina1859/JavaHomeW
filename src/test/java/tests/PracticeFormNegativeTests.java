@@ -4,7 +4,7 @@ import static helpers.TestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import helpers.TestBase;
-import net.datafaker.Faker;
+import helpers.DataGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -34,9 +34,8 @@ public class PracticeFormNegativeTests extends TestBase {
     @MethodSource("helpers.TestData#invalidPhones")
     @ParameterizedTest(name = "Короткий номер {0} отклоняется")
     void practiceFormNotValidMobile(String phone) {
-        Faker faker = new Faker();
-        String firstName = faker.name().firstName();
-        String lastName = faker.name().lastName();
+        String firstName = DataGenerator.getRandomFirstName();
+        String lastName = DataGenerator.getRandomLastName();
         String gender = getRandomItemFromList(GENDERS);
 
         practiceFormPage.open()
@@ -51,10 +50,9 @@ public class PracticeFormNegativeTests extends TestBase {
     @MethodSource("helpers.TestData#invalidEmails")
     @ParameterizedTest(name = "Некорректный email {0} отклоняется")
     void practiceFormInvalidEmail(String email) {
-        Faker faker = new Faker();
-        String firstName = faker.name().firstName();
-        String lastName = faker.name().lastName();
-        String phone = faker.number().digits(10);
+        String firstName = DataGenerator.getRandomFirstName();
+        String lastName = DataGenerator.getRandomLastName();
+        String phone = DataGenerator.getRandomPhone();
         String gender = getRandomItemFromList(GENDERS);
 
         practiceFormPage.open()
@@ -70,10 +68,9 @@ public class PracticeFormNegativeTests extends TestBase {
     @CsvSource({UNKNOWN_SUBJECT_CYRILLIC, UNKNOWN_SUBJECT_LATIN})
     @ParameterizedTest(name = "Неизвестный предмет {0} не попадает в результат")
     void practiceFormUnknownSubject(String subject) {
-        Faker faker = new Faker();
-        String firstName = faker.name().firstName();
-        String lastName = faker.name().lastName();
-        String phone = faker.number().digits(10);
+        String firstName = DataGenerator.getRandomFirstName();
+        String lastName = DataGenerator.getRandomLastName();
+        String phone = DataGenerator.getRandomPhone();
         String gender = getRandomItemFromList(GENDERS);
 
         practiceFormPage.open()

@@ -4,7 +4,7 @@ import static helpers.TestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import helpers.TestBase;
-import net.datafaker.Faker;
+import helpers.DataGenerator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.api.DisplayName;
@@ -18,10 +18,9 @@ public class PracticeFormRequiredOnlyTests extends TestBase {
     @MethodSource("helpers.TestData#genders")
     @ParameterizedTest(name = "Отправка обязательных полей: пол {0}")
     void practiceFormRequiredOnlyTest(String gender) {
-        Faker faker = new Faker();
-        String firstName = faker.name().firstName();
-        String lastName = faker.name().lastName();
-        String phone = faker.number().digits(10);
+        String firstName = DataGenerator.getRandomFirstName();
+        String lastName = DataGenerator.getRandomLastName();
+        String phone = DataGenerator.getRandomPhone();
 
         practiceFormPage.open()
                 .setFirstName(firstName)

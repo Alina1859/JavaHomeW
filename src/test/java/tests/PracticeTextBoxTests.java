@@ -1,7 +1,7 @@
 package tests;
 
 import helpers.TestBase;
-import net.datafaker.Faker;
+import helpers.DataGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,37 +18,32 @@ public class PracticeTextBoxTests extends TestBase {
 
     @Test
     void textBoxAllFieldsTest() {
-        Faker faker = new Faker();
-        String name = faker.name().fullName();
-        String email = faker.internet().emailAddress();
-        String currentAddress = faker.address().streetAddress();
-        String permanentAddress = faker.address().streetAddress();
+        DataGenerator.TextBoxData data = DataGenerator.randomTextBoxData();
 
         textBoxPage.open()
-                .setUserName(name)
-                .setUserEmail(email)
-                .setCurrentAddress(currentAddress)
-                .setPermanentAddress(permanentAddress)
+                .setUserName(data.name())
+                .setUserEmail(data.email())
+                .setCurrentAddress(data.currentAddress())
+                .setPermanentAddress(data.permanentAddress())
                 .submit();
 
-        assertEquals("Name:" + name, textBoxPage.getOutputName());
-        assertEquals("Email:" + email, textBoxPage.getOutputEmail());
-        assertEquals("Current Address :" + currentAddress, textBoxPage.getOutputCurrentAddress());
-        assertEquals("Permananet Address :" + permanentAddress, textBoxPage.getOutputPermanentAddress());
+        assertEquals("Name:" + data.name(), textBoxPage.getOutputName());
+        assertEquals("Email:" + data.email(), textBoxPage.getOutputEmail());
+        assertEquals("Current Address :" + data.currentAddress(), textBoxPage.getOutputCurrentAddress());
+        assertEquals("Permananet Address :" + data.permanentAddress(), textBoxPage.getOutputPermanentAddress());
     }
 
-    @ParameterizedTest(name = "Некорректный email {0} отклоняется")
-    @MethodSource("helpers.TestData#invalidEmails")
-    void textBoxInvalidEmailIsRejected(String email) {
-        Faker faker = new Faker();
+    @ParameterizedTest(name = "Некорректный email отклоняется, набор {index}")
+    @MethodSource("helpers.DataGenerator#invalidTextBoxEmailData")
+    void textBoxInvalidEmailIsRejected(DataGenerator.TextBoxData data) {
         textBoxPage.open()
-                .setUserName(faker.name().fullName())
-                .setUserEmail(email)
-                .setCurrentAddress(faker.address().streetAddress())
-                .setPermanentAddress(faker.address().streetAddress())
+                .setUserName(data.name())
+                .setUserEmail(data.email())
+                .setCurrentAddress(data.currentAddress())
+                .setPermanentAddress(data.permanentAddress())
                 .submit();
 
         assertTrue(textBoxPage.getUserEmailClass().contains("field-error"),
-                "Email should be rejected: " + email);
+                "Email should be rejected: " + data.email());
     }
 }
