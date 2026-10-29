@@ -5,6 +5,7 @@ import com.codeborne.selenide.SelenideElement;
 import pages.components.CalendarComponent;
 import pages.components.ResultTableComponent;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static com.codeborne.selenide.Condition.cssValue;
 import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.text;
@@ -25,10 +26,10 @@ public class PracticeFormPage {
             hobbiesWrapper = $("#hobbiesWrapper"),
             uploadPicture = $("#uploadPicture"),
             currentAddress = $("#currentAddress"),
-            stateInput = $("#react-select-3-input"),
-            stateOption = $("[id^='react-select-3-option']"),
-            cityInput = $("#react-select-4-input"),
-            cityOption = $("[id^='react-select-4-option']"),
+            stateInput = $("#state input"),
+            stateOption = $("#state [id*='-option']"),
+            cityInput = $("#city input"),
+            cityOption = $("#city [id*='-option']"),
             submit = $("#submit"),
             modalDialog = $(".modal-dialog"),
             modalTitle = $("#example-modal-sizes-title-lg");
@@ -66,10 +67,6 @@ public class PracticeFormPage {
     public PracticeFormPage waitForGenderColor(String gender, String color) {
         genderWrapper.$(byText(gender)).shouldHave(cssValue("color", color));
         return this;
-    }
-
-    public String getGenderColor(String gender) {
-        return genderWrapper.$(byText(gender)).getCssValue("color");
     }
 
     public PracticeFormPage setFirstName(String value) {
@@ -148,6 +145,11 @@ public class PracticeFormPage {
 
     public String getResult(String field) {
         return resultTable.getResult(field);
+    }
+
+    public PracticeFormPage checkResult(String expected, String actual) {
+        assertEquals(expected, actual);
+        return this;
     }
 
 }

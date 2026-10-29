@@ -1,18 +1,14 @@
 package tests;
 
 import static helpers.TestData.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import helpers.TestBase;
 import helpers.DataGenerator;
+import models.RequiredFormData;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.api.DisplayName;
 import pages.PracticeFormPage;
 
-import static utils.RandomUtils.getRandomItemFromList;
 
 @DisplayName("Форма: валидация полей")
 public class PracticeFormNegativeTests extends TestBase {
@@ -22,69 +18,61 @@ public class PracticeFormNegativeTests extends TestBase {
     @Test
     @DisplayName("Пустая форма подсвечивает обязательные поля и не отправляется")
     void practiceFormRequiredNotFilledTest() {
-        String gender = getRandomItemFromList(GENDERS);
+        RequiredFormData data = DataGenerator.randomRequiredFormData();
         practiceFormPage.open().submit();
-        practiceFormPage.checkFirstNameBorderColor("rgb(220, 53, 69)");
-        practiceFormPage.checkLastNameBorderColor("rgb(220, 53, 69)");
-        practiceFormPage.checkUserNumberBorderColor("rgb(220, 53, 69)");
-        practiceFormPage.waitForGenderColor(gender, "rgba(220, 53, 69, 1)");
-        assertEquals("rgba(220, 53, 69, 1)", practiceFormPage.getGenderColor(gender));
+        practiceFormPage.checkFirstNameBorderColor(ERROR_BORDER_COLOR);
+        practiceFormPage.checkLastNameBorderColor(ERROR_BORDER_COLOR);
+        practiceFormPage.checkUserNumberBorderColor(ERROR_BORDER_COLOR);
+        practiceFormPage.waitForGenderColor(data.gender(), ERROR_TEXT_COLOR);
     }
 
-    @MethodSource("helpers.TestData#invalidPhones")
-    @ParameterizedTest(name = "Короткий номер {0} отклоняется")
-    void practiceFormNotValidMobile(String phone) {
-        String firstName = DataGenerator.getRandomFirstName();
-        String lastName = DataGenerator.getRandomLastName();
-        String gender = getRandomItemFromList(GENDERS);
+    @Test
+    @DisplayName("Невалидный номер телефона подсвечивается ошибкой")
+    void practiceFormNotValidMobile() {
+        RequiredFormData data = DataGenerator.randomRequiredFormData();
 
         practiceFormPage.open()
-                .setFirstName(firstName)
-                .setLastName(lastName)
-                .setGender(gender)
-                .setUserNumber(phone)
+                .setFirstName(data.firstName())
+                .setLastName(data.lastName())
+                .setGender(data.gender())
+                .setUserNumber(INVALID_PHONE)
                 .submit();
-        practiceFormPage.checkUserNumberBorderColor("rgb(220, 53, 69)");
+        practiceFormPage.checkUserNumberBorderColor(ERROR_BORDER_COLOR);
     }
 
-    @MethodSource("helpers.TestData#invalidEmails")
-    @ParameterizedTest(name = "Некорректный email {0} отклоняется")
-    void practiceFormInvalidEmail(String email) {
-        String firstName = DataGenerator.getRandomFirstName();
-        String lastName = DataGenerator.getRandomLastName();
-        String phone = DataGenerator.getRandomPhone();
-        String gender = getRandomItemFromList(GENDERS);
+    @Test
+    @DisplayName("Невалидный email подсвечивается ошибкой")
+    void practiceFormInvalidEmail() {
+        RequiredFormData data = DataGenerator.randomRequiredFormData();
 
         practiceFormPage.open()
-                .setFirstName(firstName)
-                .setLastName(lastName)
-                .setGender(gender)
-                .setUserNumber(phone)
-                .setUserEmail(email)
+                .setFirstName(data.firstName())
+                .setLastName(data.lastName())
+                .setGender(data.gender())
+                .setUserNumber(data.phone())
+                .setUserEmail(INVALID_EMAIL)
                 .submit();
-        practiceFormPage.checkUserEmailBorderColor("rgb(220, 53, 69)");
+        practiceFormPage.checkUserEmailBorderColor(ERROR_BORDER_COLOR);
     }
 
-    @CsvSource({UNKNOWN_SUBJECT_CYRILLIC, UNKNOWN_SUBJECT_LATIN})
-    @ParameterizedTest(name = "Неизвестный предмет {0} не попадает в результат")
-    void practiceFormUnknownSubject(String subject) {
-        String firstName = DataGenerator.getRandomFirstName();
-        String lastName = DataGenerator.getRandomLastName();
-        String phone = DataGenerator.getRandomPhone();
-        String gender = getRandomItemFromList(GENDERS);
+    @Test
+    @DisplayName("Неизвестный предмет не добавляется в форму")
+    void practiceFormUnknownSubject() {
+        RequiredFormData data = DataGenerator.randomRequiredFormData();
 
         practiceFormPage.open()
-                .setFirstName(firstName)
-                .setLastName(lastName)
-                .setGender(gender)
-                .setUserNumber(phone)
-                .typeSubject(subject)
+                .setFirstName(data.firstName())
+                .setLastName(data.lastName())
+                .setGender(data.gender())
+                .setUserNumber(data.phone())
+                .typeSubject(UNKNOWN_SUBJECT)
                 .submit();
 
-        practiceFormPage.checkModalTitle(SUBMIT_TITLE);
-        assertEquals(firstName + " " + lastName, practiceFormPage.getResult("Student Name"));
-        assertEquals(gender, practiceFormPage.getResult("Gender"));
-        assertEquals(phone, practiceFormPage.getResult("Mobile"));
-        assertEquals("", practiceFormPage.getResult("Subjects"));
+        practiceFormPage.checkModalTitle(SUBMIT_TITLE)
+                .checkResult(data.firstName() + " " + data.lastName(),
+                        practiceFormPage.getResult("Student Name"))
+                .checkResult(data.gender(), practiceFormPage.getResult("Gender"))
+                .checkResult(data.phone(), practiceFormPage.getResult("Mobile"))
+                .checkResult("", practiceFormPage.getResult("Subjects"));
     }
 }

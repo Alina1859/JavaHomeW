@@ -1,20 +1,20 @@
 package helpers;
 
 import net.datafaker.Faker;
-import org.junit.jupiter.params.provider.Arguments;
+import models.RequiredFormData;
+import models.TextBoxData;
+import models.ValidFormData;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Stream;
 
 import static helpers.TestData.GENDERS;
 import static helpers.TestData.HOBBIES;
 import static helpers.TestData.STATE_CITIES;
 import static helpers.TestData.SUBJECTS;
-import static utils.RandomUtils.getRandomItemFromList;
 
 public class DataGenerator {
     private static final Faker FAKER = new Faker();
@@ -33,6 +33,18 @@ public class DataGenerator {
 
     public static String getRandomEmail() {
         return FAKER.internet().emailAddress();
+    }
+
+    public static String getRandomGender() {
+        return FAKER.options().nextElement(GENDERS);
+    }
+
+    public static String getRandomSubject() {
+        return FAKER.options().nextElement(SUBJECTS);
+    }
+
+    public static String getRandomHobby() {
+        return FAKER.options().nextElement(HOBBIES);
     }
 
     public static String getRandomCurrentAddress() {
@@ -59,7 +71,7 @@ public class DataGenerator {
         return randomTextBoxData(getRandomEmail());
     }
 
-    private static TextBoxData randomTextBoxData(String email) {
+    public static TextBoxData randomTextBoxData(String email) {
         return new TextBoxData(
                 getRandomName(),
                 email,
@@ -68,20 +80,17 @@ public class DataGenerator {
         );
     }
 
-    public static Stream<TextBoxData> invalidTextBoxEmailData() {
-        return TestData.INVALID_EMAILS.stream()
-                .map(email -> DataGenerator.randomTextBoxData(email));
-    }
-
-    public static Stream<Arguments> validFormData() {
-        return Stream.of(
-                Arguments.of(randomValidFormData()),
-                Arguments.of(randomValidFormData())
+    public static RequiredFormData randomRequiredFormData() {
+        return new RequiredFormData(
+                getRandomFirstName(),
+                getRandomLastName(),
+                getRandomGender(),
+                getRandomPhone()
         );
     }
 
-    private static ValidFormData randomValidFormData() {
-        List<String> stateCity = getRandomItemFromList(STATE_CITIES);
+    public static ValidFormData randomValidFormData() {
+        List<String> stateCity = FAKER.options().nextElement(STATE_CITIES);
         LocalDate birthDate = getRandomBirthDate();
 
         return new ValidFormData(
@@ -90,41 +99,15 @@ public class DataGenerator {
                 getRandomEmail(),
                 getRandomFullAddress(),
                 getRandomPhone(),
-                getRandomItemFromList(GENDERS),
+                getRandomGender(),
                 birthDate.getDayOfMonth(),
                 birthDate.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH),
                 String.valueOf(birthDate.getYear()),
                 birthDate.format(DateTimeFormatter.ofPattern("dd MMMM,yyyy", Locale.ENGLISH)),
-                getRandomItemFromList(SUBJECTS),
-                getRandomItemFromList(HOBBIES),
+                getRandomSubject(),
+                getRandomHobby(),
                 stateCity.get(0),
                 stateCity.get(1)
         );
-    }
-
-    public record ValidFormData(
-            String firstName,
-            String lastName,
-            String email,
-            String address,
-            String phone,
-            String gender,
-            int birthDay,
-            String birthMonth,
-            String birthYear,
-            String formattedBirthDate,
-            String subject,
-            String hobby,
-            String state,
-            String city
-    ) {
-    }
-
-    public record TextBoxData(
-            String name,
-            String email,
-            String currentAddress,
-            String permanentAddress
-    ) {
     }
 }

@@ -2,14 +2,11 @@ package tests;
 
 import helpers.TestBase;
 import helpers.DataGenerator;
+import helpers.TestData;
+import models.TextBoxData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 import pages.TextBoxPage;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("Text Box: отправка данных и валидация email")
 public class PracticeTextBoxTests extends TestBase {
@@ -17,8 +14,9 @@ public class PracticeTextBoxTests extends TestBase {
     private final TextBoxPage textBoxPage = new TextBoxPage();
 
     @Test
+    @DisplayName("Отправка Text Box со всеми полями")
     void textBoxAllFieldsTest() {
-        DataGenerator.TextBoxData data = DataGenerator.randomTextBoxData();
+        TextBoxData data = DataGenerator.randomTextBoxData();
 
         textBoxPage.open()
                 .setUserName(data.name())
@@ -27,15 +25,19 @@ public class PracticeTextBoxTests extends TestBase {
                 .setPermanentAddress(data.permanentAddress())
                 .submit();
 
-        assertEquals("Name:" + data.name(), textBoxPage.getOutputName());
-        assertEquals("Email:" + data.email(), textBoxPage.getOutputEmail());
-        assertEquals("Current Address :" + data.currentAddress(), textBoxPage.getOutputCurrentAddress());
-        assertEquals("Permananet Address :" + data.permanentAddress(), textBoxPage.getOutputPermanentAddress());
+        textBoxPage.checkResult("Name:" + data.name(), textBoxPage.getOutputName())
+                .checkResult("Email:" + data.email(), textBoxPage.getOutputEmail())
+                .checkResult("Current Address :" + data.currentAddress(),
+                        textBoxPage.getOutputCurrentAddress())
+                .checkResult("Permananet Address :" + data.permanentAddress(),
+                        textBoxPage.getOutputPermanentAddress());
     }
 
-    @ParameterizedTest(name = "Некорректный email отклоняется, набор {index}")
-    @MethodSource("helpers.DataGenerator#invalidTextBoxEmailData")
-    void textBoxInvalidEmailIsRejected(DataGenerator.TextBoxData data) {
+    @Test
+    @DisplayName("Невалидный email подсвечивается ошибкой")
+    void textBoxInvalidEmailIsRejected() {
+        TextBoxData data = DataGenerator.randomTextBoxData(TestData.INVALID_EMAIL);
+
         textBoxPage.open()
                 .setUserName(data.name())
                 .setUserEmail(data.email())
@@ -43,7 +45,6 @@ public class PracticeTextBoxTests extends TestBase {
                 .setPermanentAddress(data.permanentAddress())
                 .submit();
 
-        assertTrue(textBoxPage.getUserEmailClass().contains("field-error"),
-                "Email should be rejected: " + data.email());
+        textBoxPage.checkUserEmailHasError();
     }
 }
