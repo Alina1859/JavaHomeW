@@ -5,7 +5,6 @@ import com.codeborne.selenide.SelenideElement;
 import pages.components.CalendarComponent;
 import pages.components.ResultTableComponent;
 
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Condition.cssValue;
 import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.text;
@@ -27,7 +26,9 @@ public class PracticeFormPage {
             uploadPicture = $("#uploadPicture"),
             currentAddress = $("#currentAddress"),
             stateInput = $("#react-select-3-input"),
+            stateOption = $("[id^='react-select-3-option']"),
             cityInput = $("#react-select-4-input"),
+            cityOption = $("[id^='react-select-4-option']"),
             submit = $("#submit"),
             modalDialog = $(".modal-dialog"),
             modalTitle = $("#example-modal-sizes-title-lg");
@@ -97,7 +98,8 @@ public class PracticeFormPage {
     }
 
     public PracticeFormPage setSubject(String value) {
-        subjectsInput.setValue(value).pressEnter();
+        subjectsInput.setValue(value);
+        $(".subjects-auto-complete__option").shouldHave(text(value)).click();
         return this;
     }
 
@@ -122,12 +124,14 @@ public class PracticeFormPage {
     }
 
     public PracticeFormPage setState(String value) {
-        stateInput.setValue(value).pressEnter();
+        stateInput.setValue(value);
+        stateOption.shouldHave(text(value)).click();
         return this;
     }
 
     public PracticeFormPage setCity(String value) {
-        cityInput.setValue(value).pressEnter();
+        cityInput.setValue(value);
+        cityOption.shouldHave(text(value)).click();
         return this;
     }
 
