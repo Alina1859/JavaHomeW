@@ -1,0 +1,41 @@
+package tests;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import helpers.Calculator;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
+@Feature("Калькулятор")
+@DisplayName("Калькулятор: арифметика")
+public class CalculatorTests {
+
+    private final Calculator calculator = new Calculator();
+
+    @Test
+    @Severity(SeverityLevel.BLOCKER)
+    @DisplayName("Сложение двух чисел")
+    void addTest() {
+        assertEquals(5, calculator.add(2, 3));
+    }
+
+    @ParameterizedTest(name = "{0} / {1} = {2}")
+    @CsvSource({"10, 2, 5", "9, 3, 3", "7, 7, 1"})
+    @DisplayName("Деление нацело")
+    void divideTest(int a, int b, int expected) {
+        assertEquals(expected, calculator.divide(a, b));
+    }
+
+    @Test
+    @Severity(SeverityLevel.CRITICAL)
+    @DisplayName("Деление на ноль выбрасывает исключение")
+    void divideByZeroTest() {
+        assertThrows(ArithmeticException.class, () -> calculator.divide(1, 0));
+    }
+}
