@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import helpers.Calculator;
 import io.qameta.allure.Feature;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,7 +17,6 @@ public class CalculatorTests {
     private final Calculator calculator = new Calculator();
 
     @Test
-    @Severity(SeverityLevel.BLOCKER)
     @DisplayName("Сложение двух чисел")
     void addTest() {
         assertEquals(5, calculator.add(2, 3));
@@ -33,7 +30,6 @@ public class CalculatorTests {
     }
 
     @Test
-    @Severity(SeverityLevel.CRITICAL)
     @DisplayName("Деление на ноль выбрасывает исключение")
     void divideByZeroTest() {
         assertThrows(ArithmeticException.class, () -> calculator.divide(1, 0));
