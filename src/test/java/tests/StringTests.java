@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.qameta.allure.Feature;
-import io.qameta.allure.Step;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +23,6 @@ public class StringTests {
         assertTrue("Hello, Allure!".contains("Allure"));
     }
 
-    @Step("Привести {value} к верхнему регистру")
     private String toUpper(String value) {
         return value.toUpperCase();
     }
