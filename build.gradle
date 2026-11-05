@@ -33,6 +33,7 @@ allure {
 
 tasks.withType(Test).configureEach {
     useJUnitPlatform()
+    systemProperty "headless", System.getProperty("headless", "false")
 
     testLogging {
         lifecycle {
