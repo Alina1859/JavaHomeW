@@ -10,7 +10,7 @@ import static org.openqa.selenium.By.linkText;
 
 public class SelenideTest {
     @Test
-    public void TestIssueSearch() {
+    public void testIssueSearch() {
         open("https://github.com");
 
         $(".header-search-input").click();
@@ -19,6 +19,6 @@ public class SelenideTest {
 
         $(linkText("Alina1859/JavaHomeW")).click();
         $("#issues-tab").click();
-        $(withText("#80")).should(Condition.exist);
+        $(withText("#1")).should(Condition.exist);
     }
 }
