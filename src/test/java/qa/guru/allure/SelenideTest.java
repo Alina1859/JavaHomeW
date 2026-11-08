@@ -10,7 +10,11 @@ import static com.codeborne.selenide.Selenide.open;
 public class SelenideTest {
     @Test
     public void testIssueSearch() {
-        open("https://github.com/search?q=Alina1859/JavaHomeW&type=repositories");
+        open("https://github.com");
+
+        $("button[aria-label*='Search or jump to']").click();
+        $("input[aria-label*='Search or jump to']").sendKeys("Alina1859/JavaHomeW");
+        $("input[aria-label*='Search or jump to']").pressEnter();
 
         $("a[href='/Alina1859/JavaHomeW']").click();
         $("[data-tab-item='issues']").click();
