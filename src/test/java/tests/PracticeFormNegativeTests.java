@@ -1,6 +1,7 @@
 package tests;
 
 import static helpers.TestData.*;
+import static io.qameta.allure.Allure.step;
 
 import helpers.TestBase;
 import helpers.DataGenerator;
@@ -19,11 +20,19 @@ public class PracticeFormNegativeTests extends TestBase {
     @DisplayName("Пустая форма подсвечивает обязательные поля и не отправляется")
     void practiceFormRequiredNotFilledTest() {
         RequiredFormData data = DataGenerator.randomRequiredFormData();
-        practiceFormPage.open().submit();
-        practiceFormPage.checkFirstNameBorderColor(ERROR_BORDER_COLOR);
-        practiceFormPage.checkLastNameBorderColor(ERROR_BORDER_COLOR);
-        practiceFormPage.checkUserNumberBorderColor(ERROR_BORDER_COLOR);
-        practiceFormPage.waitForGenderColor(data.gender(), ERROR_TEXT_COLOR);
+
+        step("Открываем форму Practice Form", () ->
+                practiceFormPage.open());
+
+        step("Отправляем пустую форму", () ->
+                practiceFormPage.submit());
+
+        step("Проверяем подсветку обязательных полей", () -> {
+            practiceFormPage.checkFirstNameBorderColor(ERROR_BORDER_COLOR);
+            practiceFormPage.checkLastNameBorderColor(ERROR_BORDER_COLOR);
+            practiceFormPage.checkUserNumberBorderColor(ERROR_BORDER_COLOR);
+            practiceFormPage.waitForGenderColor(data.gender(), ERROR_TEXT_COLOR);
+        });
     }
 
     @Test
@@ -31,13 +40,19 @@ public class PracticeFormNegativeTests extends TestBase {
     void practiceFormNotValidMobile() {
         RequiredFormData data = DataGenerator.randomRequiredFormData();
 
-        practiceFormPage.open()
-                .setFirstName(data.firstName())
-                .setLastName(data.lastName())
-                .setGender(data.gender())
-                .setUserNumber(INVALID_PHONE)
-                .submit();
-        practiceFormPage.checkUserNumberBorderColor(ERROR_BORDER_COLOR);
+        step("Открываем форму Practice Form", () ->
+                practiceFormPage.open());
+
+        step("Заполняем форму с невалидным номером телефона", () -> {
+            practiceFormPage.setFirstName(data.firstName())
+                    .setLastName(data.lastName())
+                    .setGender(data.gender())
+                    .setUserNumber(INVALID_PHONE)
+                    .submit();
+        });
+
+        step("Проверяем подсветку ошибки у номера", () ->
+                practiceFormPage.checkUserNumberBorderColor(ERROR_BORDER_COLOR));
     }
 
     @Test
@@ -45,14 +60,20 @@ public class PracticeFormNegativeTests extends TestBase {
     void practiceFormInvalidEmail() {
         RequiredFormData data = DataGenerator.randomRequiredFormData();
 
-        practiceFormPage.open()
-                .setFirstName(data.firstName())
-                .setLastName(data.lastName())
-                .setGender(data.gender())
-                .setUserNumber(data.phone())
-                .setUserEmail(INVALID_EMAIL)
-                .submit();
-        practiceFormPage.checkUserEmailBorderColor(ERROR_BORDER_COLOR);
+        step("Открываем форму Practice Form", () ->
+                practiceFormPage.open());
+
+        step("Заполняем форму с невалидным email", () -> {
+            practiceFormPage.setFirstName(data.firstName())
+                    .setLastName(data.lastName())
+                    .setGender(data.gender())
+                    .setUserNumber(data.phone())
+                    .setUserEmail(INVALID_EMAIL)
+                    .submit();
+        });
+
+        step("Проверяем подсветку ошибки у email", () ->
+                practiceFormPage.checkUserEmailBorderColor(ERROR_BORDER_COLOR));
     }
 
     @Test
@@ -60,19 +81,25 @@ public class PracticeFormNegativeTests extends TestBase {
     void practiceFormUnknownSubject() {
         RequiredFormData data = DataGenerator.randomRequiredFormData();
 
-        practiceFormPage.open()
-                .setFirstName(data.firstName())
-                .setLastName(data.lastName())
-                .setGender(data.gender())
-                .setUserNumber(data.phone())
-                .typeSubject(UNKNOWN_SUBJECT)
-                .submit();
+        step("Открываем форму Practice Form", () ->
+                practiceFormPage.open());
 
-        practiceFormPage.checkModalTitle(SUBMIT_TITLE)
-                .checkResult(data.firstName() + " " + data.lastName(),
-                        practiceFormPage.getResult("Student Name"))
-                .checkResult(data.gender(), practiceFormPage.getResult("Gender"))
-                .checkResult(data.phone(), practiceFormPage.getResult("Mobile"))
-                .checkResult("", practiceFormPage.getResult("Subjects"));
+        step("Заполняем форму с неизвестным предметом", () -> {
+            practiceFormPage.setFirstName(data.firstName())
+                    .setLastName(data.lastName())
+                    .setGender(data.gender())
+                    .setUserNumber(data.phone())
+                    .typeSubject(UNKNOWN_SUBJECT)
+                    .submit();
+        });
+
+        step("Проверяем, что предмет не попал в результат", () -> {
+            practiceFormPage.checkModalTitle(SUBMIT_TITLE)
+                    .checkResult(data.firstName() + " " + data.lastName(),
+                            practiceFormPage.getResult("Student Name"))
+                    .checkResult(data.gender(), practiceFormPage.getResult("Gender"))
+                    .checkResult(data.phone(), practiceFormPage.getResult("Mobile"))
+                    .checkResult("", practiceFormPage.getResult("Subjects"));
+        });
     }
 }

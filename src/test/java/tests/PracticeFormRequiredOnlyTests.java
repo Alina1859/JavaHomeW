@@ -1,6 +1,7 @@
 package tests;
 
 import static helpers.TestData.*;
+import static io.qameta.allure.Allure.step;
 
 import helpers.TestBase;
 import helpers.DataGenerator;
@@ -19,17 +20,23 @@ public class PracticeFormRequiredOnlyTests extends TestBase {
     void practiceFormRequiredOnlyTest() {
         RequiredFormData data = DataGenerator.randomRequiredFormData();
 
-        practiceFormPage.open()
-                .setFirstName(data.firstName())
-                .setLastName(data.lastName())
-                .setGender(data.gender())
-                .setUserNumber(data.phone())
-                .submit();
+        step("Открываем форму Practice Form", () ->
+                practiceFormPage.open());
 
-        practiceFormPage.checkModalTitle(SUBMIT_TITLE)
-                .checkResult(data.firstName() + " " + data.lastName(),
-                        practiceFormPage.getResult("Student Name"))
-                .checkResult(data.gender(), practiceFormPage.getResult("Gender"))
-                .checkResult(data.phone(), practiceFormPage.getResult("Mobile"));
+        step("Заполняем обязательные поля", () -> {
+            practiceFormPage.setFirstName(data.firstName())
+                    .setLastName(data.lastName())
+                    .setGender(data.gender())
+                    .setUserNumber(data.phone())
+                    .submit();
+        });
+
+        step("Проверяем результат", () -> {
+            practiceFormPage.checkModalTitle(SUBMIT_TITLE)
+                    .checkResult(data.firstName() + " " + data.lastName(),
+                            practiceFormPage.getResult("Student Name"))
+                    .checkResult(data.gender(), practiceFormPage.getResult("Gender"))
+                    .checkResult(data.phone(), practiceFormPage.getResult("Mobile"));
+        });
     }
 }

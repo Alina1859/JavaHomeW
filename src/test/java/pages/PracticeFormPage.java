@@ -2,6 +2,7 @@ package pages;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import pages.components.CalendarComponent;
 import pages.components.ResultTableComponent;
 
@@ -39,114 +40,136 @@ public class PracticeFormPage {
         return this;
     }
 
+    @Step("Отправляем форму")
     public PracticeFormPage submit() {
         submit.scrollTo().click();
         return this;
     }
 
+    @Step("Проверяем цвет границы поля First Name: «{color}»")
     public PracticeFormPage checkFirstNameBorderColor(String color) {
         firstName.shouldHave(cssValue("border-color", color));
         return this;
     }
 
+    @Step("Проверяем цвет границы поля Last Name: «{color}»")
     public PracticeFormPage checkLastNameBorderColor(String color) {
         lastName.shouldHave(cssValue("border-color", color));
         return this;
     }
 
+    @Step("Проверяем цвет границы поля Mobile: «{color}»")
     public PracticeFormPage checkUserNumberBorderColor(String color) {
         userNumber.shouldHave(cssValue("border-color", color));
         return this;
     }
 
+    @Step("Проверяем цвет границы поля Email: «{color}»")
     public PracticeFormPage checkUserEmailBorderColor(String color) {
         userEmail.shouldHave(cssValue("border-color", color));
         return this;
     }
 
+    @Step("Проверяем цвет выбранного пола «{gender}»: «{color}»")
     public PracticeFormPage waitForGenderColor(String gender, String color) {
         genderWrapper.$(byText(gender)).shouldHave(cssValue("color", color));
         return this;
     }
 
+    @Step("Вводим имя «{value}»")
     public PracticeFormPage setFirstName(String value) {
         firstName.setValue(value);
         return this;
     }
 
+    @Step("Вводим фамилию «{value}»")
     public PracticeFormPage setLastName(String value) {
         lastName.setValue(value);
         return this;
     }
 
+    @Step("Вводим номер телефона «{value}»")
     public PracticeFormPage setUserNumber(String value) {
         userNumber.setValue(value);
         return this;
     }
 
+    @Step("Вводим email «{value}»")
     public PracticeFormPage setUserEmail(String value) {
         userEmail.setValue(value);
         return this;
     }
 
+    @Step("Выбираем пол «{gender}»")
     public PracticeFormPage setGender(String gender) {
         genderWrapper.$(byText(gender)).click();
         return this;
     }
 
+    @Step("Выбираем предмет «{value}»")
     public PracticeFormPage setSubject(String value) {
         subjectsInput.setValue(value);
         $(".subjects-auto-complete__option").shouldHave(text(value)).click();
         return this;
     }
 
+    @Step("Вводим предмет «{value}» и закрываем подсказку Tab'ом")
     public PracticeFormPage typeSubject(String value) {
         subjectsInput.setValue(value).pressTab();
         return this;
     }
 
+    @Step("Выбираем хобби «{value}»")
     public PracticeFormPage setHobby(String value) {
         hobbiesWrapper.$(byText(value)).click();
         return this;
     }
 
+    @Step("Загружаем фото «{fileName}»")
     public PracticeFormPage uploadPicture(String fileName) {
         uploadPicture.uploadFromClasspath(fileName);
         return this;
     }
 
+    @Step("Вводим текущий адрес «{value}»")
     public PracticeFormPage setCurrentAddress(String value) {
         currentAddress.setValue(value);
         return this;
     }
 
+    @Step("Выбираем штат «{value}»")
     public PracticeFormPage setState(String value) {
         stateInput.setValue(value);
         stateOption.shouldHave(text(value)).click();
         return this;
     }
 
+    @Step("Выбираем город «{value}»")
     public PracticeFormPage setCity(String value) {
         cityInput.setValue(value);
         cityOption.shouldHave(text(value)).click();
         return this;
     }
 
+    @Step("Устанавливаем дату рождения «{day} {month} {year}»")
     public PracticeFormPage setDateOfBirth(int day, String month, String year) {
         calendar.setDateOfBirth(day, month, year);
         return this;
     }
 
+    @Step("Проверяем заголовок модального окна «{expectedTitle}»")
     public PracticeFormPage checkModalTitle(String expectedTitle) {
         modalDialog.should(appear);
         modalTitle.shouldHave(text(expectedTitle));
         return this;
     }
 
+    @Step("Читаем значение «{field}» из таблицы результата")
     public String getResult(String field) {
         return resultTable.getResult(field);
     }
 
+    @Step("Проверяем результат: «{expected}» = «{actual}»")
     public PracticeFormPage checkResult(String expected, String actual) {
         assertEquals(expected, actual);
         return this;

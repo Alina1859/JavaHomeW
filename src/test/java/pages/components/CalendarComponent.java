@@ -1,6 +1,8 @@
 package pages.components;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
+
 import static com.codeborne.selenide.Selenide.$;
 
 public class CalendarComponent {
@@ -15,6 +17,7 @@ public class CalendarComponent {
                 + ":not(.react-datepicker__day--outside-month)");
     }
 
+    @Step("Выбираем дату рождения «{day} {month} {year}»")
     public void setDateOfBirth(int day, String month, String year) {
         dateOfBirthInput.click();
         monthSelect.selectOption(month);

@@ -8,6 +8,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pages.TextBoxPage;
 
+import static io.qameta.allure.Allure.step;
+
 @DisplayName("Text Box: отправка данных и валидация email")
 public class PracticeTextBoxTests extends TestBase {
 
@@ -18,19 +20,25 @@ public class PracticeTextBoxTests extends TestBase {
     void textBoxAllFieldsTest() {
         TextBoxData data = DataGenerator.randomTextBoxData();
 
-        textBoxPage.open()
-                .setUserName(data.name())
-                .setUserEmail(data.email())
-                .setCurrentAddress(data.currentAddress())
-                .setPermanentAddress(data.permanentAddress())
-                .submit();
+        step("Открываем страницу Text Box", () ->
+                textBoxPage.open());
 
-        textBoxPage.checkResult("Name:" + data.name(), textBoxPage.getOutputName())
-                .checkResult("Email:" + data.email(), textBoxPage.getOutputEmail())
-                .checkResult("Current Address :" + data.currentAddress(),
-                        textBoxPage.getOutputCurrentAddress())
-                .checkResult("Permananet Address :" + data.permanentAddress(),
-                        textBoxPage.getOutputPermanentAddress());
+        step("Заполняем форму", () -> {
+            textBoxPage.setUserName(data.name())
+                    .setUserEmail(data.email())
+                    .setCurrentAddress(data.currentAddress())
+                    .setPermanentAddress(data.permanentAddress())
+                    .submit();
+        });
+
+        step("Проверяем результат", () -> {
+            textBoxPage.checkResult("Name:" + data.name(), textBoxPage.getOutputName())
+                    .checkResult("Email:" + data.email(), textBoxPage.getOutputEmail())
+                    .checkResult("Current Address :" + data.currentAddress(),
+                            textBoxPage.getOutputCurrentAddress())
+                    .checkResult("Permananet Address :" + data.permanentAddress(),
+                            textBoxPage.getOutputPermanentAddress());
+        });
     }
 
     @Test
@@ -38,13 +46,18 @@ public class PracticeTextBoxTests extends TestBase {
     void textBoxInvalidEmailIsRejected() {
         TextBoxData data = DataGenerator.randomTextBoxData(TestData.INVALID_EMAIL);
 
-        textBoxPage.open()
-                .setUserName(data.name())
-                .setUserEmail(data.email())
-                .setCurrentAddress(data.currentAddress())
-                .setPermanentAddress(data.permanentAddress())
-                .submit();
+        step("Открываем страницу Text Box", () ->
+                textBoxPage.open());
 
-        textBoxPage.checkUserEmailHasError();
+        step("Заполняем форму с невалидным email", () -> {
+            textBoxPage.setUserName(data.name())
+                    .setUserEmail(data.email())
+                    .setCurrentAddress(data.currentAddress())
+                    .setPermanentAddress(data.permanentAddress())
+                    .submit();
+        });
+
+        step("Проверяем подсветку ошибки у email", () ->
+                textBoxPage.checkUserEmailHasError());
     }
 }

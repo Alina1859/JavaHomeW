@@ -20,6 +20,7 @@ dependencies {
             "org.junit.jupiter:junit-jupiter:$junitVersion",
             "org.slf4j:slf4j-simple:$slf4jVersion",
             "net.datafaker:datafaker:$datafakerVersion")
+    testImplementation "io.qameta.allure:allure-selenide:$allureAdapterVersion"
     testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }
 
