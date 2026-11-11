@@ -21,8 +21,7 @@ public class TestData {
             List.of("Haryana", "Karnal"),
             List.of("Haryana", "Panipat"),
             List.of("Rajasthan", "Jaipur"),
-            List.of("Rajasthan", "Jaiselmer"),
-            List.of("Rajasthan", "Udaipur")
+            List.of("Rajasthan", "Jaiselmer")
     );
     public static final String PICTURE = "dog.jpg";
 
