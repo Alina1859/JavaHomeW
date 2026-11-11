@@ -1,6 +1,7 @@
 package helpers;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
+import static com.codeborne.selenide.WebDriverRunner.hasWebDriverStarted;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
@@ -28,7 +29,7 @@ public class TestBase {
         chromeOptions.setCapability("se:cdpEnabled", false);
         chromeOptions.setCapability("selenoid:options", Map.of(
                 "enableVNC", true,
-                "enableVideo", false
+                "enableVideo", true
         ));
         Configuration.browserCapabilities = chromeOptions;
         Configuration.remote = "https://user1:1234@selenoid.qa.guru/wd/hub";
@@ -41,7 +42,12 @@ public class TestBase {
     }
 
     @AfterEach
-    void tearDown() {
+    void addAttachments() {
+        if (hasWebDriverStarted()) {
+            Attach.screenshotAs("Last screenshot");
+            Attach.pageSource();
+            Attach.addVideo();
+        }
         closeWebDriver();
     }
 }
