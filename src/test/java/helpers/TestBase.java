@@ -17,11 +17,13 @@ public class TestBase {
 
     @BeforeAll
     static void setUpAll() {
-        Configuration.baseUrl = "https://demoqa.com";
-        Configuration.browserSize = "1920x1080";
+        Configuration.baseUrl = TestProperties.baseUrl;
+        Configuration.remote = TestProperties.remote;
+        Configuration.browser = TestProperties.browser;
+        Configuration.browserVersion = TestProperties.browserVersion;
+        Configuration.headless = TestProperties.headless;
+        Configuration.browserSize = TestProperties.browserSize;
         Configuration.pageLoadStrategy = "eager";
-        Configuration.browser = "chrome";
-        Configuration.browserVersion = "157.0";
         Configuration.timeout = 15000;
 
         ChromeOptions chromeOptions = new ChromeOptions();
@@ -32,7 +34,6 @@ public class TestBase {
                 "enableVideo", true
         ));
         Configuration.browserCapabilities = chromeOptions;
-        Configuration.remote = "https://user1:1234@selenoid.qa.guru/wd/hub";
     }
 
     @BeforeEach
