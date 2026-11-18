@@ -9,3 +9,6 @@ build
 
 # Ignore macOS Finder metadata
 .DS_Store
+
+# Ignore npm dependencies
+node_modules
