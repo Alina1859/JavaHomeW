@@ -17,12 +17,12 @@ public class TestBase {
 
     @BeforeAll
     static void setUpAll() {
-        Configuration.baseUrl = TestProperties.baseUrl;
-        Configuration.remote = TestProperties.remote;
-        Configuration.browser = TestProperties.browser;
-        Configuration.browserVersion = TestProperties.browserVersion;
-        Configuration.headless = TestProperties.headless;
-        Configuration.browserSize = TestProperties.browserSize;
+        Configuration.baseUrl = System.getProperty("baseUrl", "https://demoqa.com");
+        Configuration.remote = System.getProperty("remote", "https://user1:1234@selenoid.qa.guru/wd/hub");
+        Configuration.browser = System.getProperty("browser", "chrome");
+        Configuration.browserVersion = System.getProperty("browserVersion", "157.0");
+        Configuration.headless = Boolean.parseBoolean(System.getProperty("headless", "false"));
+        Configuration.browserSize = System.getProperty("browserSize", "1920x1080");
         Configuration.pageLoadStrategy = "eager";
         Configuration.timeout = 15000;
 
