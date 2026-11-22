@@ -16,7 +16,5 @@ node_modules
 # Ignore Allure CLI generated report
 allure-report
 
-# Ignore allure-notifications: real config (bot token), generated chart, jar
-notifications/config.json
-notifications/chart.png
-notifications/allure-notifications-5.0.8.jar
+# Ignore allure-notifications folder (real config with bot token, chart, jar)
+notifications/
