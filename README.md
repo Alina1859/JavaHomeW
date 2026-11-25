@@ -1,6 +1,6 @@
-# HH-Vacancy-tests
+# kvality-tests
 
-UI-тесты hh.ru: Selenide + JUnit 5 + Allure.
+UI-тесты kvality.io: Selenide + JUnit 5 + Allure.
 
 ## Структура
 

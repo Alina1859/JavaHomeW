@@ -1,0 +1,54 @@
+package helpers;
+
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.openqa.selenium.chrome.ChromeOptions;
+
+import java.util.Map;
+
+import static com.codeborne.selenide.Selenide.closeWebDriver;
+import static com.codeborne.selenide.WebDriverRunner.hasWebDriverStarted;
+
+public class TestBase {
+
+    @BeforeAll
+    static void setUpAll() {
+        Configuration.baseUrl = System.getProperty("baseUrl", "https://kvality.io");
+        Configuration.remote = System.getProperty("remote", "https://user1:1234@selenoid.qa.guru/wd/hub");
+        Configuration.browser = System.getProperty("browser", "chrome");
+        Configuration.browserVersion = System.getProperty("browserVersion", "157.0");
+        Configuration.headless = Boolean.parseBoolean(System.getProperty("headless", "false"));
+        Configuration.browserSize = System.getProperty("browserSize", "1920x1080");
+        Configuration.pageLoadStrategy = "eager";
+        Configuration.timeout = 15000;
+
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("--disable-dev-shm-usage", "--no-sandbox");
+        chromeOptions.setCapability("se:cdpEnabled", false);
+        chromeOptions.setCapability("selenoid:options", Map.of(
+                "enableVNC", true,
+                "enableVideo", true
+        ));
+        Configuration.browserCapabilities = chromeOptions;
+    }
+
+    @BeforeEach
+    void addListener() {
+        SelenideLogger.addListener("AllureSelenide",
+                new AllureSelenide().screenshots(true).savePageSource(true));
+    }
+
+    @AfterEach
+    void addAttachments() {
+        if (hasWebDriverStarted()) {
+            Attach.screenshotAs("Last screenshot");
+            Attach.pageSource();
+            Attach.addVideo();
+        }
+        closeWebDriver();
+    }
+}
