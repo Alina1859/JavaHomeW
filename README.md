@@ -15,6 +15,8 @@ src/test/java/
 
 ## Запуск
 
-    ./gradlew test
+    ./gradlew test                 # ENV=local (по умолчанию) — браузер открывается локально
+    ./gradlew test -DENV=stage     # удалённо на selenoid, видео в отчёте
+    ./gradlew test -DENV=prod      # тоже удалённо на selenoid
 
-Параметры запуска и отчёт Allure — как в основном проекте (`baseUrl`, `remote`, `browser`, `browserVersion`, `headless`, `browserSize`).
+Остальные параметры (`baseUrl`, `remote`, `browser`, `browserVersion`, `headless`, `browserSize`) и отчёт Allure — как в основном проекте.

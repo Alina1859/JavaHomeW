@@ -1,27 +1,33 @@
 package tests;
 
 import helpers.TestBase;
+import helpers.TestData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pages.ApplicationsPage;
+import pages.DemoPage;
+import pages.KvalityPage;
 
 import static io.qameta.allure.Allure.step;
 
 @DisplayName("Заявки: поиск по несуществующему значению")
 public class FindNotExistingRequestTest extends TestBase {
 
-    private final ApplicationsPage applicationsPage = new ApplicationsPage();
+    private final KvalityPage kvalityPage = new KvalityPage();
+    private DemoPage demoPage;
 
     @Test
     @DisplayName("Поиск по несуществующему значению показывает заглушку «Заявки не найдены»")
     void searchNonExistingValueShowsEmptyState() {
-        step("Открываем страницу заявок", () ->
-                applicationsPage.open());
+        step("Открываем главную и переходим в демо по кнопке «Посмотреть демо»", () ->
+                demoPage = kvalityPage.open().openDemo());
+
+        step("Переходим в раздел «Заявки» по кнопке в меню", () ->
+                demoPage.openApplications());
 
         step("Вводим в поиск несуществующее значение", () ->
-                applicationsPage.searchFor("zzzzqqq12345"));
+                demoPage.searchFor(TestData.NON_EXISTING_SEARCH_VALUE));
 
         step("Проверяем, что появилась заглушка пустого результата", () ->
-                applicationsPage.checkNoResults());
+                demoPage.checkNoResults());
     }
 }

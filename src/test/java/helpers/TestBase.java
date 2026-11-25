@@ -15,25 +15,40 @@ import static com.codeborne.selenide.WebDriverRunner.hasWebDriverStarted;
 
 public class TestBase {
 
+    private static final String STAGE_REMOTE = "https://user1:1234@selenoid.qa.guru/wd/hub";
+
     @BeforeAll
     static void setUpAll() {
+        String env = System.getProperty("ENV", "local");
+
         Configuration.baseUrl = System.getProperty("baseUrl", "https://kvality.io");
-        Configuration.remote = System.getProperty("remote", "https://user1:1234@selenoid.qa.guru/wd/hub");
         Configuration.browser = System.getProperty("browser", "chrome");
-        Configuration.browserVersion = System.getProperty("browserVersion", "157.0");
         Configuration.headless = Boolean.parseBoolean(System.getProperty("headless", "false"));
         Configuration.browserSize = System.getProperty("browserSize", "1920x1080");
         Configuration.pageLoadStrategy = "eager";
         Configuration.timeout = 15000;
 
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("--disable-dev-shm-usage", "--no-sandbox");
-        chromeOptions.setCapability("se:cdpEnabled", false);
-        chromeOptions.setCapability("selenoid:options", Map.of(
-                "enableVNC", true,
-                "enableVideo", true
-        ));
-        Configuration.browserCapabilities = chromeOptions;
+        switch (env) {
+            case "local" -> {
+                Configuration.remote = null;
+                Configuration.browserVersion = "";
+            }
+            case "stage", "prod" -> {
+                Configuration.remote = System.getProperty("remote", STAGE_REMOTE);
+                Configuration.browserVersion = System.getProperty("browserVersion", "157.0");
+
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("--disable-dev-shm-usage", "--no-sandbox");
+                chromeOptions.setCapability("se:cdpEnabled", false);
+                chromeOptions.setCapability("selenoid:options", Map.of(
+                        "enableVNC", true,
+                        "enableVideo", true
+                ));
+                Configuration.browserCapabilities = chromeOptions;
+            }
+            default -> throw new IllegalArgumentException(
+                    "ENV должен быть 'local', 'stage' или 'prod', а получено: " + env);
+        }
     }
 
     @BeforeEach
@@ -47,7 +62,10 @@ public class TestBase {
         if (hasWebDriverStarted()) {
             Attach.screenshotAs("Last screenshot");
             Attach.pageSource();
-            Attach.addVideo();
+            // видео есть только на selenoid
+            if (Configuration.remote != null) {
+                Attach.addVideo();
+            }
         }
         closeWebDriver();
     }
