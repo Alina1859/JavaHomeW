@@ -62,7 +62,6 @@ public class TestBase {
         if (hasWebDriverStarted()) {
             Attach.screenshotAs("Last screenshot");
             Attach.pageSource();
-            // видео есть только на selenoid
             if (Configuration.remote != null) {
                 Attach.addVideo();
             }
