@@ -23,6 +23,6 @@ public class ShouldFailTest extends TestBase {
                 demoPage.searchFor(NON_EXISTING_SEARCH_VALUE));
 
         step("Проверяем заведомо неверный текст заглушки", () ->
-                demoPage.(WRONG_NO_RESULTS_TITLE));
+                demoPage.checkNoResultsTitle(WRONG_NO_RESULTS_TITLE));
     }
 }
