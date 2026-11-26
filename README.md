@@ -20,17 +20,17 @@
 
 ## Технологии и инструменты:
 
-![IDEA](images/logo/Intelij_IDEA.svg)
-![Java](images/logo/Java.svg)
-![Github](images/logo/Github.svg)
-![JUnit 5](images/logo/JUnit5.svg)
-![Gradle](images/logo/Gradle.svg)
-![Selenide](images/logo/Selenide.svg)
-![Selenoid](images/logo/Selenoid.svg)
-![Allure](images/logo/Allure.svg)
-![Allure TestOps](images/logo/Allure2.svg)
-![Jenkins](images/logo/Jenkins.svg)
-![Jira](images/logo/Jira.svg)
+<img src="images/logo/Intelij_IDEA.svg" width="40" height="40" alt="IDEA"/>
+<img src="images/logo/Java.svg" width="40" height="40" alt="Java"/>
+<img src="images/logo/Github.svg" width="40" height="40" alt="GitHub"/>
+<img src="images/logo/JUnit5.svg" width="40" height="40" alt="JUnit 5"/>
+<img src="images/logo/Gradle.svg" width="40" height="40" alt="Gradle"/>
+<img src="images/logo/Selenide.svg" width="40" height="40" alt="Selenide"/>
+<img src="images/logo/Selenoid.svg" width="40" height="40" alt="Selenoid"/>
+<img src="images/logo/Allure.svg" width="40" height="40" alt="Allure"/>
+<img src="images/logo/Allure2.svg" width="40" height="40" alt="Allure TestOps"/>
+<img src="images/logo/Jenkins.svg" width="40" height="40" alt="Jenkins"/>
+<img src="images/logo/Jira.svg" width="40" height="40" alt="Jira"/>
 
 ---
 
