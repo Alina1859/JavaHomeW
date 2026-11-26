@@ -90,6 +90,8 @@ clean test
 
 ---
 
+[Отчёт последней сборки в Jenkins](https://jenkins.qa.guru/view/java_students/job/kvality-tests/allure/)
+
 ### Основная страница отчёта
 
 ![Allure Overview](images/screen/allure_overview.png)
@@ -100,13 +102,17 @@ clean test
 
 ### Графики
 
-![Allure Graphs](images/screen/allure_graphs.png)
+![Allure Graphs: Status, Severity](images/screen/allure_graphs_status.png)
+![Allure Graphs: Duration, Duration trend](images/screen/allure_graphs_duration.png)
+![Allure Graphs: Retries trend, Categories trend](images/screen/allure_graphs_trends.png)
 
 ---
 
 ## Интеграция с Allure TestOps
 
 ---
+
+[Запуск тестов в Allure TestOps](https://allure.qa.guru/launch/57520)
 
 ### Allure TestOps Dashboard
 
