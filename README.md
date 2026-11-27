@@ -32,6 +32,7 @@
 - ✓ _Поиск по несуществующему значению показывает заглушку «Заявки не найдены»_
 - ✓ _Клик по посетителю в списке открывает его карточку_
 - ✓ _Фильтр «Устройство: Компьютер» оставляет в списке только посетителей с компьютера_
+- ✓ _Кнопка «Следующий посетитель» открывает карточку следующего посетителя из списка_
 
 ---
 
@@ -80,7 +81,7 @@ clean test
 
 ---
 
-[Отчёт последней сборки в Jenkins](https://jenkins.qa.guru/view/java_students/job/kvality-tests/allure/)
+[Отчёт последней сборки в Jenkins](https://jenkins.qa.guru/view/java_students/job/kvality-tests/12/allure/)
 
 ### Основная страница отчёта
 
@@ -102,7 +103,7 @@ clean test
 
 ---
 
-[Запуск тестов в Allure TestOps](https://allure.qa.guru/launch/57520)
+[Запуск тестов в Allure TestOps](https://allure.qa.guru/launch/57546)
 
 ### Allure TestOps Dashboard
 
