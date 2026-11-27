@@ -20,17 +20,7 @@
 
 ## Технологии и инструменты:
 
-<img src="images/logo/Intelij_IDEA.svg" width="40" height="40" alt="IDEA"/>
-<img src="images/logo/Java.svg" width="40" height="40" alt="Java"/>
-<img src="images/logo/Github.svg" width="40" height="40" alt="GitHub"/>
-<img src="images/logo/JUnit5.svg" width="40" height="40" alt="JUnit 5"/>
-<img src="images/logo/Gradle.svg" width="40" height="40" alt="Gradle"/>
-<img src="images/logo/Selenide.svg" width="40" height="40" alt="Selenide"/>
-<img src="images/logo/Selenoid.svg" width="40" height="40" alt="Selenoid"/>
-<img src="images/logo/Allure.svg" width="40" height="40" alt="Allure"/>
-<img src="images/logo/Allure2.svg" width="40" height="40" alt="Allure TestOps"/>
-<img src="images/logo/Jenkins.svg" width="40" height="40" alt="Jenkins"/>
-<img src="images/logo/Jira.svg" width="40" height="40" alt="Jira"/>
+<img src="images/logo/Intelij_IDEA.svg" width="40" height="40" alt="IDEA"/> <img src="images/logo/Java.svg" width="40" height="40" alt="Java"/> <img src="images/logo/Github.svg" width="40" height="40" alt="GitHub"/> <img src="images/logo/JUnit5.svg" width="40" height="40" alt="JUnit 5"/> <img src="images/logo/Gradle.svg" width="40" height="40" alt="Gradle"/> <img src="images/logo/Selenide.svg" width="40" height="40" alt="Selenide"/> <img src="images/logo/Selenoid.svg" width="40" height="40" alt="Selenoid"/> <img src="images/logo/Allure.svg" width="40" height="40" alt="Allure"/> <img src="images/logo/Allure2.svg" width="40" height="40" alt="Allure TestOps"/> <img src="images/logo/Jenkins.svg" width="40" height="40" alt="Jenkins"/> <img src="images/logo/Jira.svg" width="40" height="40" alt="Jira"/>
 
 ---
 
@@ -117,14 +107,6 @@ clean test
 ### Allure TestOps Dashboard
 
 ![Allure TestOps Dashboard](images/screen/testops_dashboard.png)
-
-### Ручные тест-кейсы
-
-![Manual tests](images/screen/testops_manual.png)
-
-### Авто тест-кейсы
-
-![Auto tests](images/screen/testops_auto.png)
 
 ---
 
