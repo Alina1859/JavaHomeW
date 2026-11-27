@@ -1,30 +1,27 @@
 package tests;
 
-import static helpers.DataTest.*;
 import static io.qameta.allure.Allure.step;
 
 import helpers.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pages.DemoPage;
-import pages.components.VisitorCard;
+import pages.VisitorsPage;
 
 @DisplayName("Посетители: открытие информации о посетителе")
 public class OpenVisitorsInfoTest extends BaseTest {
 
-    private final DemoPage demoPage = new DemoPage();
-    private final VisitorCard visitorCard = new VisitorCard();
+    private final VisitorsPage visitorsPage = new VisitorsPage();
 
     @Test
     @DisplayName("Клик по посетителю в списке открывает его карточку")
     void openVisitorsInfoTest() {
         step("Открываем раздел «Посетители»", () ->
-                demoPage.open().openVisitors());
+                visitorsPage.open().openVisitors());
 
-        step("Кликаем по первому посетителю в списке", demoPage::openFirstVisitor);
+        step("Открываем карточку второго посетителя в списке", visitorsPage::openSecondVisitor);
 
         step("Проверяем результат", () ->
-                visitorCard.checkTitle(VISITOR_CARD_TITLE)
-                        .checkVisitor(demoPage.getFirstVisitorCity(), demoPage.getFirstVisitorLastVisit()));
+                visitorsPage.checkVisitorCardTitle()
+                        .checkVisitorCard(visitorsPage.getSecondVisitorCity(), visitorsPage.getSecondVisitorLastVisit()));
     }
 }

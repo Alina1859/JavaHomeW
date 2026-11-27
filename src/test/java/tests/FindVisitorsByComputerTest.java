@@ -6,23 +6,23 @@ import static io.qameta.allure.Allure.step;
 import helpers.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pages.DemoPage;
+import pages.VisitorsPage;
 
 @DisplayName("Посетители: фильтр по устройству")
 public class FindVisitorsByComputerTest extends BaseTest {
 
-    private final DemoPage demoPage = new DemoPage();
+    private final VisitorsPage visitorsPage = new VisitorsPage();
 
     @Test
     @DisplayName("Фильтр «Компьютер» оставляет в списке только посетителей с компьютера")
     void findVisitorsByComputerTest() {
         step("Открываем раздел «Посетители»", () ->
-                demoPage.open().openVisitors());
+                visitorsPage.open().openVisitors());
 
         step("Включаем в фильтре «Устройство» значение «Компьютер»", () ->
-                demoPage.openDeviceFilter().selectDevice(DEVICE_COMPUTER).closeFilters());
+                visitorsPage.openDeviceFilter().selectDesktop().closeFilters());
 
         step("Проверяем результат", () ->
-                demoPage.checkVisitorsHaveDevice(DEVICE_COMPUTER));
+                visitorsPage.checkVisitorsHaveDevice(DEVICE_COMPUTER));
     }
 }
