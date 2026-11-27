@@ -1,15 +1,15 @@
 package tests;
 
-import static helpers.TestData.*;
+import static helpers.DataTest.*;
 import static io.qameta.allure.Allure.step;
 
-import helpers.TestBase;
+import helpers.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pages.DemoPage;
 
 @DisplayName("Посетители: фильтр по устройству")
-public class FindVisitorsByComputerTest extends TestBase {
+public class FindVisitorsByComputerTest extends BaseTest {
 
     private final DemoPage demoPage = new DemoPage();
 

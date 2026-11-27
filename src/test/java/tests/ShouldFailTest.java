@@ -1,15 +1,15 @@
 package tests;
 
-import static helpers.TestData.*;
+import static helpers.DataTest.*;
 import static io.qameta.allure.Allure.step;
 
-import helpers.TestBase;
+import helpers.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pages.DemoPage;
 
 @DisplayName("Проверка отчёта: этот тест специально падает")
-public class ShouldFailTest extends TestBase {
+public class ShouldFailTest extends BaseTest {
 
     private final DemoPage demoPage = new DemoPage();
 

@@ -18,8 +18,8 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.actions;
-import static helpers.TestData.NO_RESULTS_TEXT;
-import static helpers.TestData.NO_RESULTS_TITLE;
+import static helpers.DataTest.NO_RESULTS_TEXT;
+import static helpers.DataTest.NO_RESULTS_TITLE;
 
 public class DemoPage {
 

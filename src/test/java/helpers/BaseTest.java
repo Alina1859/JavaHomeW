@@ -13,7 +13,7 @@ import java.util.Map;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.WebDriverRunner.hasWebDriverStarted;
 
-public class TestBase {
+public class BaseTest {
 
     private static final String STAGE_REMOTE = "https://user1:1234@selenoid.qa.guru/wd/hub";
 

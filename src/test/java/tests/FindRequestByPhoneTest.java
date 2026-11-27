@@ -2,14 +2,14 @@ package tests;
 
 import static io.qameta.allure.Allure.step;
 
-import helpers.TestBase;
+import helpers.BaseTest;
 import models.RequestData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pages.DemoPage;
 
 @DisplayName("Заявки: поиск по телефону")
-public class FindRequestByPhoneTest extends TestBase {
+public class FindRequestByPhoneTest extends BaseTest {
 
     private final DemoPage demoPage = new DemoPage();
 

@@ -1,6 +1,6 @@
 package helpers;
 
-public class TestData {
+public class DataTest {
 
     public static final String NON_EXISTING_SEARCH_VALUE = "zzzzqqq12345";
 
